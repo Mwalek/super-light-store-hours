@@ -23,27 +23,31 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 	public function slwh_render_plugin_settings_page() {
 		?>
-			<h2>Store Operating Hours</h2>
-			<form action="options.php" method="post">
-			<?php
-			settings_fields( 'slwh_plugin_options' );
-			do_settings_sections( 'slwh_example_plugin' );
-			?>
-				<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
-			</form>
+			<div class="wrap">
+				<div class="main_content">
+					<h2>Store Operating Hours</h2>
+					<form action="options.php" method="post">
+					<?php
+					settings_fields( 'slwh_plugin_options' );
+					do_settings_sections( 'slwh_example_plugin' );
+					?>
+						<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
+					</form>
+				</div>
+			</div>
 			<?php
 	}
 
 	public function slwh_register_settings() {
 		$default_options = array(
-			'api_key'       => '123abc',
+			'working_days'  => array( 'working_days' => array( 'Wednesday' ) ),
 			'results_limit' => 'unknown',
 			'start_date'    => 'today',
 		);
 		register_setting( 'slwh_plugin_options', 'slwh_plugin_options', array( 'default' => $default_options ), array( $this, 'slwh_plugin_options_validate' ) );
-		add_settings_section( 'api_settings', 'API Settings', array( $this, 'slwh_plugin_section_text' ), 'slwh_example_plugin' );
+		add_settings_section( 'api_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'slwh_example_plugin' );
 
-		add_settings_field( 'slwh_plugin_setting_api_key', 'API Key', array( $this, 'slwh_plugin_setting_api_key' ), 'slwh_example_plugin', 'api_settings' );
+		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_api_key' ), 'slwh_example_plugin', 'api_settings' );
 		add_settings_field( 'slwh_plugin_setting_results_limit', 'Results Limit', array( $this, 'slwh_plugin_setting_results_limit' ), 'slwh_example_plugin', 'api_settings' );
 		add_settings_field( 'slwh_plugin_setting_start_date', 'Start Date', array( $this, 'slwh_plugin_setting_start_date' ), 'slwh_example_plugin', 'api_settings' );
 	}
@@ -58,13 +62,34 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_plugin_section_text() {
-		echo '<p>Here you can set all the options for using the API</p>';
+		echo '<p>Here you can set all the options regarding when you want to accept orders.</p>';
 	}
 
 	public function slwh_plugin_setting_api_key() {
-		$options = get_option( 'slwh_plugin_options' );
-		ray( $options );
-		echo "<input id='slwh_plugin_setting_api_key' name='slwh_plugin_options[api_key]' type='text' value='" . esc_attr( $options['api_key'] ) . "' />";
+		$options           = get_option( 'slwh_plugin_options', array() );
+		$slwh_working_days = isset( $options['working_days'] )
+		? (array) $options['working_days'] : array();
+		ray( $options, $slwh_working_days );
+		// $html = "
+		?>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slwh_working_days ), 1 ); ?> value='Sunday'>
+		<label for='sunday'> Sunday</label><br>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='monday' <?php checked( in_array( 'Monday', $slwh_working_days ), 1 ); ?> value='Monday'>
+		<label for='monday'> Monday</label><br>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='tuesday' <?php checked( in_array( 'Tuesday', $slwh_working_days ), 1 ); ?> value='Tuesday'>
+		<label for='tuesday'> Tuesday</label><br>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='wednesday' <?php checked( in_array( 'Wednesday', $slwh_working_days ), 1 ); ?> value='Wednesday'>
+		<label for='wednesday'> Wednesday</label><br>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='thursday' <?php checked( in_array( 'Thursday', $slwh_working_days ), 1 ); ?> value='Thursday'>
+		<label for='thursday'> Thursday</label><br>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='friday' <?php checked( in_array( 'Friday', $slwh_working_days ), 1 ); ?> value='Friday'>
+		<label for='friday'> Friday</label><br>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='saturday' <?php checked( in_array( 'Saturday', $slwh_working_days ), 1 ); ?> value='Saturday'>
+		<label for='saturday'> Saturday</label><br>
+		<?php
+		// ";
+		// echo "<input id='slwh_plugin_setting_api_key' name='slwh_plugin_options[api_key]' type='text' value='" . esc_attr( $options['api_key'] ) . "' />";
+		// echo $html;
 	}
 
 	public function slwh_plugin_setting_results_limit() {

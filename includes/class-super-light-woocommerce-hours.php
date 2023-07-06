@@ -4,11 +4,16 @@
  */
 
 // Exit if accessed directly.
-// if ( ! defined( 'ABSPATH' ) ) {
-// exit;
-// }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-require_once 'class-super-light-woocommerce-hours-settings.php';
+require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/class-super-light-woocommerce-hours-settings.php';
+
+/**
+ * The class responsible for defining all actions that occur in the admin area.
+ */
+require_once plugin_dir_path( dirname( __FILE__ ) ) . '/admin/class-super-light-woocommerce-hours-admin.php';
 
 if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 
@@ -19,6 +24,7 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 			register_activation_hook( __FILE__, 'slwh_set_up_plugin' );
 
 			$settings = new Super_Light_Woocommerce_Hours_Settings();
+			$admin    = new Super_Light_Woocommerce_Hours_Admin();
 		}
 
 		/**
