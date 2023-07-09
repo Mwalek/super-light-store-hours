@@ -1,6 +1,3 @@
-/*!****************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./assets/src/admin.scss ***!
-  \****************************************************************************************************************/
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -62,14 +59,4 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
-}
-
-.slwh_admin_wrapper {
-  margin-top: 10px;
-}
-.slwh_admin_wrapper .notice {
-  margin: 5px 0 15px;
-}
-.slwh_admin_wrapper #wpbody-content {
-  margin-right: 20px;
 }

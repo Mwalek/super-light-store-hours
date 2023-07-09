@@ -1,15 +1,13 @@
-.slwh_admin_wrapper .notice {
-  margin: 5px 0 15px;
-}
+@use "toggle-switch-slider";
 
 .slwh_admin_wrapper {
   margin-top: 10px;
-}
 
-.slwh_admin_wrapper #wpbody-content {
-  margin-right: 20px;
-}
+  .notice {
+    margin: 5px 0 15px;
+  }
 
-.slwh_admin_wrapper h2 {
-  color: $red;
+  #wpbody-content {
+    margin-right: 20px;
+  }
 }
