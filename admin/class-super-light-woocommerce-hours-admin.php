@@ -20,7 +20,7 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours_Admin' ) ) {
 			$screen = get_current_screen();
 			ray( $screen )->label( 'screen' );
 			if ( 'settings_page_sl-woocommerce-hours' === $screen->base ) {
-				wp_enqueue_style( 'slwh_admin_styles', plugins_url( '../assets/css/slwh_admin_styles.css', ( __FILE__ ) ), false, '1.0.0', 'all' );
+				wp_enqueue_style( 'slwh_admin_style', plugins_url( '../assets/css/slwh_admin_style.css', ( __FILE__ ) ), false, '1.0.0', 'all' );
 			}
 		}
 
