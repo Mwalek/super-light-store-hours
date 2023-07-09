@@ -1,0 +1,24 @@
+{
+  "name": "super-light-woocommerce-hours",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mwalek/super-light-woocommerce-hours.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mwalek/super-light-woocommerce-hours/issues"
+  },
+  "homepage": "https://github.com/Mwalek/super-light-woocommerce-hours#readme",
+  "devDependencies": {
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
