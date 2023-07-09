@@ -1,23 +1,25 @@
 /*!****************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./assets/src/admin.scss ***!
   \****************************************************************************************************************/
-/* The switch - the box around the slider */
-.switch {
+.slwh_admin_wrapper {
+  /* The switch - the box around the slider */
+  /* Hide default HTML checkbox */
+  /* The slider */
+  /* Rounded sliders */
+  margin-top: 10px;
+}
+.slwh_admin_wrapper .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
 }
-
-/* Hide default HTML checkbox */
-.switch input {
+.slwh_admin_wrapper .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
-
-/* The slider */
-.slider {
+.slwh_admin_wrapper .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -28,8 +30,7 @@
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
-
-.slider:before {
+.slwh_admin_wrapper .slider:before {
   position: absolute;
   content: "";
   height: 26px;
@@ -40,32 +41,22 @@
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
-
-input:checked + .slider {
+.slwh_admin_wrapper input:checked + .slider {
   background-color: #2196f3;
 }
-
-input:focus + .slider {
+.slwh_admin_wrapper input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
 }
-
-input:checked + .slider:before {
+.slwh_admin_wrapper input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
-
-/* Rounded sliders */
-.slider.round {
+.slwh_admin_wrapper .slider.round {
   border-radius: 34px;
 }
-
-.slider.round:before {
+.slwh_admin_wrapper .slider.round:before {
   border-radius: 50%;
-}
-
-.slwh_admin_wrapper {
-  margin-top: 10px;
 }
 .slwh_admin_wrapper .notice {
   margin: 5px 0 15px;
