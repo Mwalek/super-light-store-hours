@@ -99,7 +99,12 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 	public function slwh_plugin_setting_start_date() {
 		$options = get_option( 'slwh_plugin_options' );
-		echo "<input id='slwh_plugin_setting_start_date' name='slwh_plugin_options[start_date]' type='text' value='" . esc_attr( $options['start_date'] ) . "' />";
+		?>
+		<label class="switch">
+			<input type="checkbox">
+			<span class="slider round"></span>
+		</label>
+		<?php
 	}
 
 }
