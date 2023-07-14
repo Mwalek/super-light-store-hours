@@ -45,11 +45,11 @@ class Super_Light_Woocommerce_Hours_Settings {
 			'status'        => 'today',
 		);
 		register_setting( 'slwh_plugin_options', 'slwh_plugin_options', array( 'default' => $default_options ), array( $this, 'slwh_plugin_options_validate' ) );
-		add_settings_section( 'api_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'slwh_example_plugin' );
+		add_settings_section( 'schedule_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'slwh_example_plugin' );
 
-		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_api_key' ), 'slwh_example_plugin', 'api_settings' );
-		add_settings_field( 'slwh_plugin_setting_results_limit', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_results_limit' ), 'slwh_example_plugin', 'api_settings' );
-		add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'slwh_example_plugin', 'api_settings' );
+		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_api_key' ), 'slwh_example_plugin', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_results_limit', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_results_limit' ), 'slwh_example_plugin', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'slwh_example_plugin', 'schedule_settings' );
 	}
 
 	public function slwh_plugin_options_validate( $input ) {
