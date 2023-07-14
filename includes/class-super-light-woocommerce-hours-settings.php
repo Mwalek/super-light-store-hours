@@ -118,9 +118,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		// $slwh_status = $options['status'];
 		$checked = 1;
 		$current = isset( $options['status'] )
-		? $options['status'] : '0';
-		ray( $options, $current )->purple();
-		$value = $current ? 'true' : 'false';
+		? $options['status'] : '0'; // Set current to false by default.
 		// The value to compare with (the value of the checkbox below).
 		$current = 1;
 		// True by default, just here to make things clear.
