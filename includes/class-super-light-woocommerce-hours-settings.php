@@ -116,18 +116,18 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$options         = get_option( 'slwh_plugin_options' );
 		// $update          = update_option( 'slwh_plugin_options', $default_options );
 		// $slwh_status = $options['status'];
-		$checked     = 1;
-		$slwh_status = isset( $options['status'] )
+		$checked = 1;
+		$current = isset( $options['status'] )
 		? $options['status'] : '0';
-		ray( $options, $slwh_status )->purple();
-		$value = $slwh_status ? 'true' : 'false';
+		ray( $options, $current )->purple();
+		$value = $current ? 'true' : 'false';
 		// The value to compare with (the value of the checkbox below).
 		$current = 1;
 		// True by default, just here to make things clear.
-		$echo = true;
+		$display = true;
 		?>
 		<label class="switch">
-		<input type='checkbox' name='slwh_plugin_options[status]' id='status' <?php checked( $checked, $slwh_status, $echo ); ?> value='1' >
+		<input type='checkbox' name='slwh_plugin_options[status]' id='status' <?php checked( $checked, $current, $display ); ?> value='1' >
 
 			<span class="slider round"></span>
 		</label>
