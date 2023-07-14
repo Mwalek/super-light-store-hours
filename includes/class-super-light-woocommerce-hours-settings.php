@@ -29,7 +29,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 					<form action="options.php" method="post">
 					<?php
 					settings_fields( 'slwh_plugin_options' );
-					do_settings_sections( 'slwh_example_plugin' );
+					do_settings_sections( 'sl_woocommerce_hours' );
 					?>
 						<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
 					</form>
@@ -45,11 +45,11 @@ class Super_Light_Woocommerce_Hours_Settings {
 			'status'        => 'today',
 		);
 		register_setting( 'slwh_plugin_options', 'slwh_plugin_options', array( 'default' => $default_options ), array( $this, 'slwh_plugin_options_validate' ) );
-		add_settings_section( 'schedule_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'slwh_example_plugin' );
+		add_settings_section( 'schedule_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'sl_woocommerce_hours' );
 
-		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_api_key' ), 'slwh_example_plugin', 'schedule_settings' );
-		add_settings_field( 'slwh_plugin_setting_results_limit', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_results_limit' ), 'slwh_example_plugin', 'schedule_settings' );
-		add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'slwh_example_plugin', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_api_key' ), 'sl_woocommerce_hours', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_results_limit', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_results_limit' ), 'sl_woocommerce_hours', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
 	}
 
 	public function slwh_plugin_options_validate( $input ) {
