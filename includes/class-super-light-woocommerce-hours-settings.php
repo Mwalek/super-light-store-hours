@@ -42,14 +42,14 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$default_options = array(
 			'working_days'  => array( 'working_days' => array( 'Wednesday' ) ),
 			'results_limit' => 'unknown',
-			'start_date'    => 'today',
+			'status'        => 'today',
 		);
 		register_setting( 'slwh_plugin_options', 'slwh_plugin_options', array( 'default' => $default_options ), array( $this, 'slwh_plugin_options_validate' ) );
 		add_settings_section( 'api_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'slwh_example_plugin' );
 
 		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_api_key' ), 'slwh_example_plugin', 'api_settings' );
-		add_settings_field( 'slwh_plugin_setting_results_limit', 'Results Limit', array( $this, 'slwh_plugin_setting_results_limit' ), 'slwh_example_plugin', 'api_settings' );
-		add_settings_field( 'slwh_plugin_setting_start_date', 'Start Date', array( $this, 'slwh_plugin_setting_start_date' ), 'slwh_example_plugin', 'api_settings' );
+		add_settings_field( 'slwh_plugin_setting_results_limit', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_results_limit' ), 'slwh_example_plugin', 'api_settings' );
+		add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'slwh_example_plugin', 'api_settings' );
 	}
 
 	public function slwh_plugin_options_validate( $input ) {
@@ -93,17 +93,45 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_plugin_setting_results_limit() {
-		$options = get_option( 'slwh_plugin_options' );
-		echo "<input id='slwh_plugin_setting_results_limit' name='slwh_plugin_options[results_limit]' type='text' value='" . esc_attr( $options['results_limit'] ) . "' />";
-	}
-
-	public function slwh_plugin_setting_start_date() {
+		$default_options = array(
+			'working_days'  => array( 'working_days' => array( 'Wednesday' ) ),
+			'results_limit' => 'unknown',
+			'status'        => 'today',
+		);
+		// update_option( 'slwh_plugin_options', $default_options );
 		$options = get_option( 'slwh_plugin_options' );
 		?>
+		<input id='slwh_plugin_setting_results_limit' name='slwh_plugin_options[results_limit]' type='text' value=' <?php esc_attr( $options['results_limit'] ); ?>' />
+		<span class="block_description">Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed.</span>
+
+		<?php
+	}
+
+	public function slwh_plugin_setting_status() {
+		$default_options = array(
+			'working_days'  => array( 'working_days' => array( 'Wednesday' ) ),
+			'results_limit' => 'unknown',
+			'status'        => 'today',
+		);
+		$options         = get_option( 'slwh_plugin_options' );
+		// $update          = update_option( 'slwh_plugin_options', $default_options );
+		// $slwh_status = $options['status'];
+		$checked     = 1;
+		$slwh_status = isset( $options['status'] )
+		? $options['status'] : '0';
+		ray( $options, $slwh_status )->purple();
+		$value = $slwh_status ? 'true' : 'false';
+		// The value to compare with (the value of the checkbox below).
+		$current = 1;
+		// True by default, just here to make things clear.
+		$echo = true;
+		?>
 		<label class="switch">
-			<input type="checkbox">
+		<input type='checkbox' name='slwh_plugin_options[status]' id='status' <?php checked( $checked, $slwh_status, $echo ); ?> value='1' >
+
 			<span class="slider round"></span>
 		</label>
+		<br><span class="block_description">This option <strong>overrides</strong> other scheduling options.</span>
 		<?php
 	}
 

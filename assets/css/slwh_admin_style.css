@@ -64,3 +64,8 @@
 .slwh_admin_wrapper #wpbody-content {
   margin-right: 20px;
 }
+.slwh_admin_wrapper .block_description {
+  display: block;
+  margin: 10px auto;
+  padding: 5px;
+}
