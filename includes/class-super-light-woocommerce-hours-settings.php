@@ -40,25 +40,57 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 	public function slwh_register_settings() {
 		$default_options = array(
-			'working_days'  => array( 'working_days' => array( 'Wednesday' ) ),
-			'results_limit' => 'unknown',
-			'status'        => 'today',
+			'working_days'         => array(),
+			'opening_closing_time' => '',
+			'status'               => 'today',
 		);
-		register_setting( 'slwh_plugin_options', 'slwh_plugin_options', array( 'default' => $default_options ), array( $this, 'slwh_plugin_options_validate' ) );
+		register_setting(
+			'slwh_plugin_options',
+			'slwh_plugin_options',
+			array(
+				'default'           => $default_options,
+				'sanitize_callback' => array(
+					$this,
+					'slwh_plugin_options_validate',
+				),
+			)
+		);
 		add_settings_section( 'schedule_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'sl_woocommerce_hours' );
 
-		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
-		add_settings_field( 'slwh_plugin_setting_results_limit', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_working_days', 'Working Days', array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_opening_closing_time', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
 		add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
 	}
 
 	public function slwh_plugin_options_validate( $input ) {
-		$newinput['api_key'] = trim( $input['api_key'] );
-		if ( ! preg_match( '/^[a-z0-9]{32}$/i', $newinput['api_key'] ) ) {
-			$newinput['api_key'] = '';
+		if ( isset( $input['opening_closing_time'] ) ) {
+
+			$input['opening_closing_time'] = trim( preg_replace( '/\s+/', '', $input['opening_closing_time'] ) );
+			if ( preg_match( '/^(\d{2}(?=-\d{2}))-((?<=\d{2}-)\d{2})/i', $input['opening_closing_time'], $matches ) ) {
+				array_shift( $matches );
+				$prev_match = 0;
+				foreach ( $matches as $match ) {
+
+					/*
+					Make sure that
+					[1] provided values do not exceed 24 (hours).
+					[2] The first (prev) match is less than the current one.
+					*/
+					if ( 24 < $match || $prev_match > $match ) {
+						$input['opening_closing_time'] = '';
+						break;
+					}
+					$prev_match = $match;
+				}
+				// ray( $input )->orange();
+				return $input;
+			} else {
+				$input['opening_closing_time'] = '';
+			}
 		}
 
-		return $newinput;
+		return $input;
+
 	}
 
 	public function slwh_plugin_section_text() {
@@ -69,51 +101,47 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$options           = get_option( 'slwh_plugin_options', array() );
 		$slwh_working_days = isset( $options['working_days'] )
 		? (array) $options['working_days'] : array();
-		ray( $options, $slwh_working_days );
-		// $html = "
+		ray( $options );
 		?>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slwh_working_days ), 1 ); ?> value='Sunday'>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slwh_working_days, true ), 1 ); ?> value='Sunday'>
 		<label for='sunday'> Sunday</label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='monday' <?php checked( in_array( 'Monday', $slwh_working_days ), 1 ); ?> value='Monday'>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='monday' <?php checked( in_array( 'Monday', $slwh_working_days, true ), 1 ); ?> value='Monday'>
 		<label for='monday'> Monday</label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='tuesday' <?php checked( in_array( 'Tuesday', $slwh_working_days ), 1 ); ?> value='Tuesday'>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='tuesday' <?php checked( in_array( 'Tuesday', $slwh_working_days, true ), 1 ); ?> value='Tuesday'>
 		<label for='tuesday'> Tuesday</label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='wednesday' <?php checked( in_array( 'Wednesday', $slwh_working_days ), 1 ); ?> value='Wednesday'>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='wednesday' <?php checked( in_array( 'Wednesday', $slwh_working_days, true ), 1 ); ?> value='Wednesday'>
 		<label for='wednesday'> Wednesday</label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='thursday' <?php checked( in_array( 'Thursday', $slwh_working_days ), 1 ); ?> value='Thursday'>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='thursday' <?php checked( in_array( 'Thursday', $slwh_working_days, true ), 1 ); ?> value='Thursday'>
 		<label for='thursday'> Thursday</label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='friday' <?php checked( in_array( 'Friday', $slwh_working_days ), 1 ); ?> value='Friday'>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='friday' <?php checked( in_array( 'Friday', $slwh_working_days, true ), 1 ); ?> value='Friday'>
 		<label for='friday'> Friday</label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='saturday' <?php checked( in_array( 'Saturday', $slwh_working_days ), 1 ); ?> value='Saturday'>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='saturday' <?php checked( in_array( 'Saturday', $slwh_working_days, true ), 1 ); ?> value='Saturday'>
 		<label for='saturday'> Saturday</label><br>
 		<?php
-		// ";
-		// echo "<input id='slwh_plugin_setting_api_key' name='slwh_plugin_options[api_key]' type='text' value='" . esc_attr( $options['api_key'] ) . "' />";
-		// echo $html;
 	}
 
 	public function slwh_plugin_setting_opening_closing_time() {
 		$default_options = array(
-			'working_days'  => array( 'working_days' => array( 'Wednesday' ) ),
-			'results_limit' => 'unknown',
-			'status'        => 'today',
+			'working_days'         => array(),
+			'opening_closing_time' => '',
+			'status'               => 'today',
 		);
-		// update_option( 'slwh_plugin_options', $default_options );
-		$options = get_option( 'slwh_plugin_options' );
+		$options         = get_option( 'slwh_plugin_options' );
 		?>
-		<input id='slwh_plugin_setting_results_limit' name='slwh_plugin_options[results_limit]' type='text' value=' <?php esc_attr( $options['results_limit'] ); ?>' />
-		<span class="block_description">Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed.</span>
+		<input id='slwh_plugin_setting_opening_closing_time' name='slwh_plugin_options[opening_closing_time]' type='text' value='<?php echo esc_attr( $options['opening_closing_time'] ); ?>' />
+		<span class="block_description">Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.</span>
 
 		<?php
 	}
 
 	public function slwh_plugin_setting_status() {
 		$default_options = array(
-			'working_days'  => array( 'working_days' => array( 'Wednesday' ) ),
-			'results_limit' => 'unknown',
-			'status'        => 'today',
+			'working_days'         => array(),
+			'opening_closing_time' => '',
+			'status'               => '0',
 		);
-		$options         = get_option( 'slwh_plugin_options' );
+		// update_option( 'slwh_plugin_options', $default_options );
+		$options = get_option( 'slwh_plugin_options' );
 		// One of the values to compare.
 		$checked = 1;
 		// The other value to compare if not just true.
@@ -121,7 +149,6 @@ class Super_Light_Woocommerce_Hours_Settings {
 		? $options['status'] : '0'; // Set current to false by default.
 		// Whether to echo or just return the string.
 		$display = true;
-		ray( $checked, $current )->purple();
 		?>
 		<label class="switch">
 		<input type='checkbox' name='slwh_plugin_options[status]' id='status' <?php checked( $checked, $current, $display ); ?> value='1' >
