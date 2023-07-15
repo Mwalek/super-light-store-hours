@@ -47,8 +47,8 @@ class Super_Light_Woocommerce_Hours_Settings {
 		register_setting( 'slwh_plugin_options', 'slwh_plugin_options', array( 'default' => $default_options ), array( $this, 'slwh_plugin_options_validate' ) );
 		add_settings_section( 'schedule_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'sl_woocommerce_hours' );
 
-		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_api_key' ), 'sl_woocommerce_hours', 'schedule_settings' );
-		add_settings_field( 'slwh_plugin_setting_results_limit', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_results_limit' ), 'sl_woocommerce_hours', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_api_key', 'Working Days', array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
+		add_settings_field( 'slwh_plugin_setting_results_limit', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
 		add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
 	}
 
@@ -65,7 +65,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		echo '<p>Here you can set all the options regarding when you want to accept orders.</p>';
 	}
 
-	public function slwh_plugin_setting_api_key() {
+	public function slwh_plugin_setting_working_days() {
 		$options           = get_option( 'slwh_plugin_options', array() );
 		$slwh_working_days = isset( $options['working_days'] )
 		? (array) $options['working_days'] : array();
@@ -92,7 +92,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		// echo $html;
 	}
 
-	public function slwh_plugin_setting_results_limit() {
+	public function slwh_plugin_setting_opening_closing_time() {
 		$default_options = array(
 			'working_days'  => array( 'working_days' => array( 'Wednesday' ) ),
 			'results_limit' => 'unknown',
