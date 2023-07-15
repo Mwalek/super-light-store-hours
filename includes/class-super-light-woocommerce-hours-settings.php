@@ -63,8 +63,8 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_plugin_options_validate( $input ) {
+		$current_options = get_option( 'slwh_plugin_options' );
 		if ( isset( $input['opening_closing_time'] ) ) {
-
 			$input['opening_closing_time'] = trim( preg_replace( '/\s+/', '', $input['opening_closing_time'] ) );
 			if ( preg_match( '/^(\d{2}(?=-\d{2}))-((?<=\d{2}-)\d{2})/i', $input['opening_closing_time'], $matches ) ) {
 				array_shift( $matches );
@@ -76,8 +76,16 @@ class Super_Light_Woocommerce_Hours_Settings {
 					[1] provided values do not exceed 24 (hours).
 					[2] The first (prev) match is less than the current one.
 					*/
-					if ( 24 < $match || $prev_match > $match ) {
-						$input['opening_closing_time'] = '';
+					if ( 24 < $match ) {
+						// $input['opening_closing_time'] = '';
+						$input['opening_closing_time'] = $current_options['opening_closing_time'];
+						add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: The opening and closing time should not exceed 24 (hours).', 'super-light-woocommerce-hours' ) );
+						break;
+					}
+					if ( $prev_match > $match ) {
+						// $input['opening_closing_time'] = '';
+						$input['opening_closing_time'] = $current_options['opening_closing_time'];
+						add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: The opening time should be earlier than the closing time.', 'super-light-woocommerce-hours' ) );
 						break;
 					}
 					$prev_match = $match;
@@ -85,7 +93,9 @@ class Super_Light_Woocommerce_Hours_Settings {
 				// ray( $input )->orange();
 				return $input;
 			} else {
-				$input['opening_closing_time'] = '';
+				// $input['opening_closing_time'] = '';
+				add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: Use the format HH - HH for the opening and closing time. For example, 08 - 18.', 'super-light-woocommerce-hours' ) );
+				$input['opening_closing_time'] = $current_options['opening_closing_time'];
 			}
 		}
 
