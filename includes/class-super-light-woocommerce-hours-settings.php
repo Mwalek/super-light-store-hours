@@ -14,7 +14,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
-		add_action( 'rest_api_init', array( $this, 'api_stuff' ) );
+		add_action( 'rest_api_init', array( $this, 'slwh_register_settings' ) );
 	}
 
 	public function slwh_add_settings_page() {
@@ -36,42 +36,6 @@ class Super_Light_Woocommerce_Hours_Settings {
 				</div>
 			</div>
 			<?php
-	}
-
-	public function api_stuff() {
-		$default_options = array(
-			'working_days'         => array(),
-			'opening_closing_time' => '',
-			'status'               => 'today',
-		);
-		register_setting(
-			'sl-woocommerce-hours',
-			'slwh_plugin_options',
-			array(
-				'default'           => $default_options,
-				'type'              => 'object',
-				'sanitize_callback' => array(
-					$this,
-					'slwh_plugin_options_validate',
-				),
-				'show_in_rest'      => array(
-					'schema' => array(
-						'type'       => 'object',
-						'properties' => array(
-							'working_days'         => array(
-								'type' => 'array',
-							),
-							'opening_closing_time' => array(
-								'type' => 'string',
-							),
-							'status'               => array(
-								'type' => 'string',
-							),
-						),
-					),
-				),
-			)
-		);
 	}
 
 	public function slwh_register_settings() {
@@ -108,11 +72,16 @@ class Super_Light_Woocommerce_Hours_Settings {
 				),
 			)
 		);
-		add_settings_section( 'schedule_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'sl_woocommerce_hours' );
 
-		add_settings_field( 'slwh_plugin_setting_working_days', 'Working Days', array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
-		add_settings_field( 'slwh_plugin_setting_opening_closing_time', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
-		add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
+		if ( function_exists( 'add_settings_section' ) ) {
+
+			add_settings_section( 'schedule_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'sl_woocommerce_hours' );
+
+			add_settings_field( 'slwh_plugin_setting_working_days', 'Working Days', array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_opening_closing_time', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
+
+		}
 	}
 
 	public function slwh_plugin_options_validate( $input ) {
