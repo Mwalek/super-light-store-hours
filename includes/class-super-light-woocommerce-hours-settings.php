@@ -14,7 +14,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
-
+		add_action( 'rest_api_init', array( $this, 'api_stuff' ) );
 	}
 
 	public function slwh_add_settings_page() {
@@ -28,7 +28,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 					<h2>Store Operating Hours</h2>
 					<form action="options.php" method="post">
 					<?php
-					settings_fields( 'slwh_plugin_options' );
+					settings_fields( 'sl-woocommerce-hours' );
 					do_settings_sections( 'sl_woocommerce_hours' );
 					?>
 						<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
@@ -38,6 +38,42 @@ class Super_Light_Woocommerce_Hours_Settings {
 			<?php
 	}
 
+	public function api_stuff() {
+		$default_options = array(
+			'working_days'         => array(),
+			'opening_closing_time' => '',
+			'status'               => 'today',
+		);
+		register_setting(
+			'sl-woocommerce-hours',
+			'slwh_plugin_options',
+			array(
+				'default'           => $default_options,
+				'type'              => 'object',
+				'sanitize_callback' => array(
+					$this,
+					'slwh_plugin_options_validate',
+				),
+				'show_in_rest'      => array(
+					'schema' => array(
+						'type'       => 'object',
+						'properties' => array(
+							'working_days'         => array(
+								'type' => 'array',
+							),
+							'opening_closing_time' => array(
+								'type' => 'string',
+							),
+							'status'               => array(
+								'type' => 'string',
+							),
+						),
+					),
+				),
+			)
+		);
+	}
+
 	public function slwh_register_settings() {
 		$default_options = array(
 			'working_days'         => array(),
@@ -45,13 +81,30 @@ class Super_Light_Woocommerce_Hours_Settings {
 			'status'               => 'today',
 		);
 		register_setting(
-			'slwh_plugin_options',
+			'sl-woocommerce-hours',
 			'slwh_plugin_options',
 			array(
 				'default'           => $default_options,
+				'type'              => 'object',
 				'sanitize_callback' => array(
 					$this,
 					'slwh_plugin_options_validate',
+				),
+				'show_in_rest'      => array(
+					'schema' => array(
+						'type'       => 'object',
+						'properties' => array(
+							'working_days'         => array(
+								'type' => 'array',
+							),
+							'opening_closing_time' => array(
+								'type' => 'string',
+							),
+							'status'               => array(
+								'type' => 'string',
+							),
+						),
+					),
 				),
 			)
 		);
@@ -64,6 +117,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 	public function slwh_plugin_options_validate( $input ) {
 		$current_options = get_option( 'slwh_plugin_options' );
+		// add_option( 'slwh_plugin_options', $current_options );
 		if ( isset( $input['opening_closing_time'] ) ) {
 			$input['opening_closing_time'] = trim( preg_replace( '/\s+/', '', $input['opening_closing_time'] ) );
 			if ( preg_match( '/^(\d{2}(?=-\d{2}))-((?<=\d{2}-)\d{2})/i', $input['opening_closing_time'], $matches ) ) {
@@ -150,7 +204,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 			'opening_closing_time' => '',
 			'status'               => '0',
 		);
-		// update_option( 'slwh_plugin_options', $default_options );
+		// delete_option( 'slwh_plugin_options' );
 		$options = get_option( 'slwh_plugin_options' );
 		// One of the values to compare.
 		$checked = 1;
