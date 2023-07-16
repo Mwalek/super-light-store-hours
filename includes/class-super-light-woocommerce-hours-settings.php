@@ -42,7 +42,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$default_options = array(
 			'working_days'         => array(),
 			'opening_closing_time' => '',
-			'status'               => 'today',
+			'status'               => '0',
 		);
 		register_setting(
 			'sl-woocommerce-hours',
@@ -86,7 +86,8 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 	public function slwh_plugin_options_validate( $input ) {
 		$current_options = get_option( 'slwh_plugin_options' );
-		// add_option( 'slwh_plugin_options', $current_options );
+		// Add 0 as the status value if it's not currently set.
+		$input['status'] ??= '0';
 		if ( isset( $input['opening_closing_time'] ) ) {
 			$input['opening_closing_time'] = trim( preg_replace( '/\s+/', '', $input['opening_closing_time'] ) );
 			if ( preg_match( '/^(\d{2}(?=-\d{2}))-((?<=\d{2}-)\d{2})/i', $input['opening_closing_time'], $matches ) ) {
@@ -157,7 +158,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$default_options = array(
 			'working_days'         => array(),
 			'opening_closing_time' => '',
-			'status'               => 'today',
+			'status'               => '0',
 		);
 		$options         = get_option( 'slwh_plugin_options' );
 		?>
