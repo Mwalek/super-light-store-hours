@@ -15,6 +15,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
 		add_action( 'rest_api_init', array( $this, 'slwh_register_settings' ) );
+		add_action( 'init', array( $this, 'get_slwh_status' ) );
 	}
 
 	public function slwh_add_settings_page() {
@@ -191,6 +192,39 @@ class Super_Light_Woocommerce_Hours_Settings {
 		</label>
 		<br><span class="block_description">This option <strong>overrides</strong> other scheduling options.</span>
 		<?php
+	}
+
+	public function get_slwh_status() {
+		$slwh_options = get_option( 'slwh_plugin_options' );
+		// Return early if the override status is 1, regardless of the time.
+		if ( '1' === $slwh_options['status'] ) {
+			ray( 1 );
+			return '1';
+		}
+		$current_time = current_datetime()->format( 'H:i:s' );
+		ray( $current_time );
+		$raw_time_range  = $slwh_options['opening_closing_time'];
+		$operating_hours = explode( '-', $raw_time_range );
+		ray( $operating_hours );
+
+		function format_plain_hours( $hours ) {
+			$formatted_hours = $hours . ':00:00';
+			return $formatted_hours;
+		}
+
+		$opening_time = format_plain_hours( $operating_hours[0] );
+		$closing_time = format_plain_hours( $operating_hours[1] );
+
+		ray( $opening_time );
+
+		// Check if current time is between opening and closing time.
+		if ( $opening_time < $current_time && $current_time < $closing_time ) {
+			ray( 1 );
+			return '1';
+		} else {
+			ray( 0 );
+			return '0';
+		}
 	}
 
 }
