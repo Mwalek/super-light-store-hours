@@ -201,21 +201,30 @@ class Super_Light_Woocommerce_Hours_Settings {
 			ray( 1 );
 			return '1';
 		}
-		$current_time = current_datetime()->format( 'H:i:s' );
-		ray( $current_time );
-		$raw_time_range  = $slwh_options['opening_closing_time'];
-		$operating_hours = explode( '-', $raw_time_range );
-		ray( $operating_hours );
+		$current_time_obj = current_datetime();
+		$tz               = $current_time_obj->getTimezone();
+		$current_time     = strtotime( current_datetime()->format( 'H:i:s' ) );
+		$raw_time_range   = $slwh_options['opening_closing_time'];
+		$operating_hours  = explode( '-', $raw_time_range );
 
 		function format_plain_hours( $hours ) {
 			$formatted_hours = $hours . ':00:00';
 			return $formatted_hours;
 		}
+		/**
+		 * Provides an alternative way to compare time values in settings with current time.
+		 *
+		 * @param [string]       $hours
+		 * @param [DateTimeZone] $tz
+		 * @return DateTimeImmutable
+		 */
+		function convert_plain_hrs_to_obj( $hours, $tz ) {
+			$obj = DateTimeImmutable::createFromFormat( 'H', $hours, $tz );
+			return $obj;
+		}
 
-		$opening_time = format_plain_hours( $operating_hours[0] );
-		$closing_time = format_plain_hours( $operating_hours[1] );
-
-		ray( $opening_time );
+		$opening_time = strtotime( format_plain_hours( $operating_hours[0] ) );
+		$closing_time = strtotime( format_plain_hours( $operating_hours[1] ) );
 
 		// Check if current time is between opening and closing time.
 		if ( $opening_time < $current_time && $current_time < $closing_time ) {
@@ -225,6 +234,16 @@ class Super_Light_Woocommerce_Hours_Settings {
 			ray( 0 );
 			return '0';
 		}
+		/**
+		 * Alternative way to do the comparison above is as follows:
+		 * $opening_time = convert_plain_hrs_to_obj( $operating_hours[0], $tz );
+		 * $closing_time = convert_plain_hrs_to_obj( $operating_hours[1], $tz );
+		 * if ($opening_time < $current_time_obj && $current_time_obj < $closing_time) {
+		 * // Within operating hours
+		 * } else {
+		 * // Outside operating hours
+		 * }
+		 */
 	}
 
 }
