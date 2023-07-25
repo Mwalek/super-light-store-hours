@@ -196,12 +196,22 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 	public function get_slwh_status() {
 		$slwh_options = get_option( 'slwh_plugin_options' );
-		// Return early if the override status is 1, regardless of the time.
+
+		// Return early if the override status is 1, regardless of the date or time.
 		if ( '1' === $slwh_options['status'] ) {
 			ray( 1 );
 			return '1';
 		}
-		$current_time    = strtotime( current_datetime()->format( 'H:i:s' ) );
+		$current_datetime_obj = current_datetime();
+		$day_of_week          = $current_datetime_obj->format( 'l' );
+
+		// Check if current day of the week is on our list of working days.
+		if ( ! in_array( $day_of_week, $slwh_options['working_days'] ) ) {
+			ray( 0 );
+			return '0';
+		}
+
+		$current_time    = strtotime( $current_datetime_obj->format( 'H:i:s' ) );
 		$raw_time_range  = $slwh_options['opening_closing_time'];
 		$operating_hours = explode( '-', $raw_time_range );
 
