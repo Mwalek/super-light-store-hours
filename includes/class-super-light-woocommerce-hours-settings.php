@@ -15,7 +15,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
 		add_action( 'rest_api_init', array( $this, 'slwh_register_settings' ) );
-		add_action( 'init', array( $this, 'get_slwh_condition' ) );
+		add_action( 'init', array( $this, 'get_slwh_status' ) );
 		add_action(
 			'rest_api_init',
 			function () {
@@ -56,7 +56,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$default_options = array(
 			'working_days'         => array(),
 			'opening_closing_time' => '',
-			'status'               => '0',
+			'override_status'      => '0',
 		);
 		register_setting(
 			'sl-woocommerce-hours',
@@ -78,7 +78,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 							'opening_closing_time' => array(
 								'type' => 'string',
 							),
-							'status'               => array(
+							'override_status'      => array(
 								'type' => 'string',
 							),
 						),
@@ -93,15 +93,15 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 			add_settings_field( 'slwh_plugin_setting_working_days', 'Working Days', array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
 			add_settings_field( 'slwh_plugin_setting_opening_closing_time', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
-			add_settings_field( 'slwh_plugin_setting_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_override_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_override_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
 
 		}
 	}
 
 	public function slwh_plugin_options_validate( $input ) {
 		$current_options = get_option( 'slwh_plugin_options' );
-		// Add 0 as the status value if it's not currently set.
-		$input['status'] ??= '0';
+		// Add 0 as the override_status value if it's not currently set.
+		$input['override_status'] ??= '0';
 		if ( isset( $input['opening_closing_time'] ) ) {
 			$input['opening_closing_time'] = trim( preg_replace( '/\s+/', '', $input['opening_closing_time'] ) );
 			if ( preg_match( '/^(\d{2}(?=-\d{2}))-((?<=\d{2}-)\d{2})/i', $input['opening_closing_time'], $matches ) ) {
@@ -172,7 +172,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$default_options = array(
 			'working_days'         => array(),
 			'opening_closing_time' => '',
-			'status'               => '0',
+			'override_status'      => '0',
 		);
 		$options         = get_option( 'slwh_plugin_options' );
 		?>
@@ -182,24 +182,24 @@ class Super_Light_Woocommerce_Hours_Settings {
 		<?php
 	}
 
-	public function slwh_plugin_setting_status() {
+	public function slwh_plugin_setting_override_status() {
 		$default_options = array(
 			'working_days'         => array(),
 			'opening_closing_time' => '',
-			'status'               => '0',
+			'override_status'      => '0',
 		);
 		// delete_option( 'slwh_plugin_options' );
 		$options = get_option( 'slwh_plugin_options' );
 		// One of the values to compare.
 		$checked = 1;
 		// The other value to compare if not just true.
-		$current = isset( $options['status'] )
-		? $options['status'] : '0'; // Set current to false by default.
+		$current = isset( $options['override_status'] )
+		? $options['override_status'] : '0'; // Set current to false by default.
 		// Whether to echo or just return the string.
 		$display = true;
 		?>
 		<label class="switch">
-		<input type='checkbox' name='slwh_plugin_options[status]' id='status' <?php checked( $checked, $current, $display ); ?> value='1' >
+		<input type='checkbox' name='slwh_plugin_options[override_status]' id='override_status' <?php checked( $checked, $current, $display ); ?> value='1' >
 
 			<span class="slider round"></span>
 		</label>
@@ -207,14 +207,14 @@ class Super_Light_Woocommerce_Hours_Settings {
 		<?php
 	}
 
-	public function get_slwh_condition() {
-		$slwh_options              = get_option( 'slwh_plugin_options' );
-		$slwh_options['condition'] = null;
+	public function get_slwh_status() {
+		$slwh_options           = get_option( 'slwh_plugin_options' );
+		$slwh_options['status'] = null;
 
-		// Return early if the override status is 1, regardless of the date or time.
-		if ( '1' === $slwh_options['status'] ) {
+		// Return early if the override_status is 1, regardless of the date or time.
+		if ( '1' === $slwh_options['override_status'] ) {
 			ray( 1 );
-			$slwh_options['condition'] = '1';
+			$slwh_options['status'] = '1';
 			return $slwh_options;
 		}
 		$current_datetime_obj = current_datetime();
@@ -223,7 +223,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		// Check if current day of the week is on our list of working days.
 		if ( ! in_array( $day_of_week, $slwh_options['working_days'], true ) ) {
 			ray( 0 );
-			$slwh_options['condition'] = '0';
+			$slwh_options['status'] = '0';
 			return $slwh_options;
 		}
 
@@ -250,17 +250,17 @@ class Super_Light_Woocommerce_Hours_Settings {
 		// Check if current time is between opening and closing time.
 		if ( $opening_time < $current_time && $current_time < $closing_time ) {
 			ray( 1 );
-			$slwh_options['condition'] = '1';
+			$slwh_options['status'] = '1';
 			return $slwh_options;
 		} else {
 			ray( 0 );
-			$slwh_options['condition'] = '0';
+			$slwh_options['status'] = '0';
 			return $slwh_options;
 		}
 	}
 
 	public function get_slwh_settings() {
-		return $this->get_slwh_condition();
+		return $this->get_slwh_status();
 	}
 
 }
