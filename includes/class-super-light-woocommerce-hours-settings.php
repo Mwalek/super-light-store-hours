@@ -15,7 +15,20 @@ class Super_Light_Woocommerce_Hours_Settings {
 		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
 		add_action( 'rest_api_init', array( $this, 'slwh_register_settings' ) );
-		add_action( 'init', array( $this, 'get_slwh_status' ) );
+		add_action( 'init', array( $this, 'get_slwh_condition' ) );
+		add_action(
+			'rest_api_init',
+			function () {
+				register_rest_route(
+					'slwh/v1',
+					'/state',
+					array(
+						'methods'  => 'GET',
+						'callback' => array( $this, 'get_slwh_settings' ),
+					)
+				);
+			}
+		);
 	}
 
 	public function slwh_add_settings_page() {
@@ -194,30 +207,41 @@ class Super_Light_Woocommerce_Hours_Settings {
 		<?php
 	}
 
-	public function get_slwh_status() {
-		$slwh_options = get_option( 'slwh_plugin_options' );
+	public function get_slwh_condition() {
+		$slwh_options              = get_option( 'slwh_plugin_options' );
+		$slwh_options['condition'] = null;
 
 		// Return early if the override status is 1, regardless of the date or time.
 		if ( '1' === $slwh_options['status'] ) {
 			ray( 1 );
-			return '1';
+			$slwh_options['condition'] = '1';
+			return $slwh_options;
 		}
 		$current_datetime_obj = current_datetime();
 		$day_of_week          = $current_datetime_obj->format( 'l' );
 
 		// Check if current day of the week is on our list of working days.
-		if ( ! in_array( $day_of_week, $slwh_options['working_days'] ) ) {
+		if ( ! in_array( $day_of_week, $slwh_options['working_days'], true ) ) {
 			ray( 0 );
-			return '0';
+			$slwh_options['condition'] = '0';
+			return $slwh_options;
 		}
 
 		$current_time    = strtotime( $current_datetime_obj->format( 'H:i:s' ) );
 		$raw_time_range  = $slwh_options['opening_closing_time'];
 		$operating_hours = explode( '-', $raw_time_range );
 
-		function format_plain_hours( $hours ) {
-			$formatted_hours = $hours . ':00:00';
-			return $formatted_hours;
+		if ( ! function_exists( 'format_plain_hours' ) ) {
+			/**
+			 * Takes a plain number and returns a valid time string (e.g 14 => 14:00:00)
+			 *
+			 * @param string $hours A plain 2 digit string.
+			 * @return string
+			 */
+			function format_plain_hours( $hours ) {
+				$formatted_hours = $hours . ':00:00';
+				return $formatted_hours;
+			}
 		}
 
 		$opening_time = strtotime( format_plain_hours( $operating_hours[0] ) );
@@ -226,11 +250,17 @@ class Super_Light_Woocommerce_Hours_Settings {
 		// Check if current time is between opening and closing time.
 		if ( $opening_time < $current_time && $current_time < $closing_time ) {
 			ray( 1 );
-			return '1';
+			$slwh_options['condition'] = '1';
+			return $slwh_options;
 		} else {
 			ray( 0 );
-			return '0';
+			$slwh_options['condition'] = '0';
+			return $slwh_options;
 		}
+	}
+
+	public function get_slwh_settings() {
+		return $this->get_slwh_condition();
 	}
 
 }
