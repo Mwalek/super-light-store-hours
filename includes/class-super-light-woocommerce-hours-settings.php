@@ -52,6 +52,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		'strong'   => array(),
 		'fieldset' => array(),
 		'hr'       => array(),
+		'code'     => array(),
 
 	);
 	public function __construct() {
@@ -133,11 +134,11 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 		if ( function_exists( 'add_settings_section' ) ) {
 
-			add_settings_section( 'schedule_settings', 'Schedule Settings', array( $this, 'slwh_plugin_section_text' ), 'sl_woocommerce_hours' );
+			add_settings_section( 'schedule_settings', __( 'Schedule Settings', 'super-light-woocommerce-hours' ), array( $this, 'slwh_plugin_section_text' ), 'sl_woocommerce_hours' );
 
-			add_settings_field( 'slwh_plugin_setting_working_days', 'Working Days', array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
-			add_settings_field( 'slwh_plugin_setting_opening_closing_time', 'Opening & Closing Time', array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
-			add_settings_field( 'slwh_plugin_setting_override_status', 'Enable/Disable Store', array( $this, 'slwh_plugin_setting_override_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_working_days', __( 'Working Days', 'super-light-woocommerce-hours' ), array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_opening_closing_time', __( 'Opening & Closing Time', 'super-light-woocommerce-hours' ), array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_override_status', __( 'Enable/Disable Store', 'super-light-woocommerce-hours' ), array( $this, 'slwh_plugin_setting_override_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
 
 		}
 	}
@@ -186,7 +187,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_plugin_section_text() {
-		echo '<p>Here you can set all the options regarding when you want to accept orders.</p>';
+		esc_html_e( 'Here you can set all the options regarding when you want to accept orders.', 'super-light-woocommerce-hours' );
 	}
 
 	public function slwh_plugin_setting_working_days() {
@@ -194,22 +195,21 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$slwh_working_days = isset( $options['working_days'] )
 		? (array) $options['working_days'] : array();
 		ray( $options );
-		$monday = __( 'Monday', 'super-light-woocommerce-hours' );
 		?>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slwh_working_days, true ), 1 ); ?> value='Sunday'>
-		<label for='sunday'> Sunday</label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='monday' <?php checked( in_array( $monday, $slwh_working_days, true ), 1 ); ?> value='<?php echo esc_attr( $monday ); ?>'>
-		<label for='monday'><?php echo esc_attr( $monday ); ?></label><br>
+		<label for='sunday'><?php esc_html_e( 'Sunday', 'super-light-woocommerce-hours' ); ?></label><br>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='monday' <?php checked( in_array( 'Monday', $slwh_working_days, true ), 1 ); ?> value='Monday'>
+		<label for='monday'><?php esc_html_e( 'Monday', 'super-light-woocommerce-hours' ); ?></label><br>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='tuesday' <?php checked( in_array( 'Tuesday', $slwh_working_days, true ), 1 ); ?> value='Tuesday'>
-		<label for='tuesday'> Tuesday</label><br>
+		<label for='tuesday'><?php esc_html_e( 'Tuesday', 'super-light-woocommerce-hours' ); ?></label><br>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='wednesday' <?php checked( in_array( 'Wednesday', $slwh_working_days, true ), 1 ); ?> value='Wednesday'>
-		<label for='wednesday'> Wednesday</label><br>
+		<label for='wednesday'><?php esc_html_e( 'Wednesday', 'super-light-woocommerce-hours' ); ?></label><br>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='thursday' <?php checked( in_array( 'Thursday', $slwh_working_days, true ), 1 ); ?> value='Thursday'>
-		<label for='thursday'> Thursday</label><br>
+		<label for='thursday'><?php esc_html_e( 'Thursday', 'super-light-woocommerce-hours' ); ?></label><br>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='friday' <?php checked( in_array( 'Friday', $slwh_working_days, true ), 1 ); ?> value='Friday'>
-		<label for='friday'> Friday</label><br>
+		<label for='friday'><?php esc_html_e( 'Friday', 'super-light-woocommerce-hours' ); ?></label><br>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='saturday' <?php checked( in_array( 'Saturday', $slwh_working_days, true ), 1 ); ?> value='Saturday'>
-		<label for='saturday'> Saturday</label><br>
+		<label for='saturday'><?php esc_html_e( 'Saturday', 'super-light-woocommerce-hours' ); ?></label><br>
 		<?php
 	}
 
@@ -222,7 +222,12 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$options         = get_option( 'slwh_plugin_options' );
 		?>
 		<input id='slwh_plugin_setting_opening_closing_time' name='slwh_plugin_options[opening_closing_time]' type='text' value='<?php echo esc_attr( $options['opening_closing_time'] ); ?>' />
-		<span class="block_description">Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.</span>
+		<span class="block_description">
+			<?php
+			$operating_hrs_desc = __( 'Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.', 'super-light-woocommerce-hours' );
+			echo wp_kses( $operating_hrs_desc, $this->allowed_html );
+			?>
+			<!-- Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.</span> -->
 
 		<?php
 	}
@@ -248,7 +253,11 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 			<span class="slider round"></span>
 		</label>
-		<br><span class="block_description">This option <strong>overrides</strong> other scheduling options.</span>
+		<br><span class="block_description">
+			<?php
+			esc_html_e( 'This option overrides other scheduling options.', 'super-light-woocommerce-hours' );
+			?>
+		</span>
 		<?php
 	}
 
