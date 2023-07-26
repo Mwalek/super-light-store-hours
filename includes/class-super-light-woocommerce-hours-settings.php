@@ -11,6 +11,49 @@
 
 
 class Super_Light_Woocommerce_Hours_Settings {
+	/**
+	 * An array of allowed HTML elements and attributes.
+	 *
+	 * @var array
+	 */
+	public $allowed_html = array(
+		'input'    => array(
+			'name'        => array(),
+			'id'          => array(),
+			'type'        => array(),
+			'placeholder' => array(),
+			'value'       => array(),
+		),
+		'select'   => array(
+			'name'     => array(),
+			'id'       => array(),
+			'disabled' => array(),
+		),
+		'option'   => array(
+			'value'    => array(),
+			'selected' => array(),
+
+		),
+		'textarea' => array(
+			'name'        => array(),
+			'id'          => array(),
+			'placeholder' => array(),
+		),
+		'span'     => array(
+			'class' => array(),
+			'style' => array(),
+		),
+		'p'        => array(
+			'class' => array(),
+			'style' => array(),
+		),
+		'br'       => array(),
+		'em'       => array(),
+		'strong'   => array(),
+		'fieldset' => array(),
+		'hr'       => array(),
+
+	);
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
@@ -150,11 +193,12 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$slwh_working_days = isset( $options['working_days'] )
 		? (array) $options['working_days'] : array();
 		ray( $options );
+		$monday = __( 'Monday', 'super-light-woocommerce-hours' );
 		?>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slwh_working_days, true ), 1 ); ?> value='Sunday'>
 		<label for='sunday'> Sunday</label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='monday' <?php checked( in_array( 'Monday', $slwh_working_days, true ), 1 ); ?> value='Monday'>
-		<label for='monday'> Monday</label><br>
+		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='monday' <?php checked( in_array( $monday, $slwh_working_days, true ), 1 ); ?> value='<?php echo esc_attr( $monday ); ?>'>
+		<label for='monday'><?php echo esc_attr( $monday ); ?></label><br>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='tuesday' <?php checked( in_array( 'Tuesday', $slwh_working_days, true ), 1 ); ?> value='Tuesday'>
 		<label for='tuesday'> Tuesday</label><br>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='wednesday' <?php checked( in_array( 'Wednesday', $slwh_working_days, true ), 1 ); ?> value='Wednesday'>

@@ -6,6 +6,8 @@
  * Author: Mwale Kalenga
  * Author URI: https://mwale.me
  * License: GPLv3 or later
+ * Text Domain: super-light-woocommerce-hours
+ * Domain Path: /languages
  */
 
 // Exit if accessed directly.
