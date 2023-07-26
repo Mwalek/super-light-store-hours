@@ -43,11 +43,8 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 		 * @return void
 		 */
 		public function super_light_woocommerce_hours_load_textdomain() {
-			ray( dirname( __DIR__ ) )->green();
 			$path = dirname( plugin_basename( __DIR__ ), 1 ) . '/languages/';
-			ray( $path )->red();
 			load_plugin_textdomain( 'super-light-woocommerce-hours', false, $path );
-			ray( 'ola' );
 		}
 
 	}

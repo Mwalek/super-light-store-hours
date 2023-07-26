@@ -66,8 +66,9 @@ class Super_Light_Woocommerce_Hours_Settings {
 					'slwh/v1',
 					'/state',
 					array(
-						'methods'  => 'GET',
-						'callback' => array( $this, 'get_slwh_settings' ),
+						'methods'             => 'GET',
+						'callback'            => array( $this, 'get_slwh_settings' ),
+						'permission_callback' => '__return_true',
 					)
 				);
 			}
