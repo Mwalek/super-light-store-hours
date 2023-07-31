@@ -25,6 +25,7 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 
 			$settings = new Super_Light_Woocommerce_Hours_Settings();
 			$admin    = new Super_Light_Woocommerce_Hours_Admin();
+			add_action( 'plugins_loaded', array( $this, 'super_light_woocommerce_hours_load_textdomain' ) );
 		}
 
 		/**
@@ -34,6 +35,16 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 		 */
 		function slwh_set_up_plugin() {
 			// Create or upgrade the database.
+		}
+
+		/**
+		 * Declares the plugin text domain and languages directory.
+		 *
+		 * @return void
+		 */
+		public function super_light_woocommerce_hours_load_textdomain() {
+			$path = dirname( plugin_basename( __DIR__ ), 1 ) . '/languages/';
+			load_plugin_textdomain( 'super-light-woocommerce-hours', false, $path );
 		}
 
 	}
