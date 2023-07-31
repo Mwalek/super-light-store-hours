@@ -58,6 +58,11 @@ class Super_Light_Woocommerce_Hours_Settings {
 		'code'     => array(),
 
 	);
+	private $default_options = array(
+		'working_days'         => array( 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ),
+		'opening_closing_time' => '00-24',
+		'override_status'      => '0',
+	);
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
@@ -104,16 +109,11 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_register_settings() {
-		$default_options = array(
-			'working_days'         => array(),
-			'opening_closing_time' => '',
-			'override_status'      => '0',
-		);
 		register_setting(
 			'sl-woocommerce-hours',
 			'slwh_plugin_options',
 			array(
-				'default'           => $default_options,
+				'default'           => $this->default_options,
 				'type'              => 'object',
 				'sanitize_callback' => array(
 					$this,
@@ -150,7 +150,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_plugin_options_validate( $input ) {
-		$current_options = get_option( 'slwh_plugin_options' );
+		$current_options = get_option( 'slwh_plugin_options', $this->default_options );
 		// Add 0 as the override_status value if it's not currently set.
 		$input['override_status'] ??= '0';
 		if ( isset( $input['opening_closing_time'] ) ) {
@@ -192,7 +192,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_plugin_setting_working_days() {
-		$options           = get_option( 'slwh_plugin_options', array() );
+		$options           = get_option( 'slwh_plugin_options', $this->default_options );
 		$slwh_working_days = isset( $options['working_days'] )
 		? (array) $options['working_days'] : array();
 		?>
@@ -214,12 +214,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_plugin_setting_opening_closing_time() {
-		$default_options = array(
-			'working_days'         => array(),
-			'opening_closing_time' => '',
-			'override_status'      => '0',
-		);
-		$options         = get_option( 'slwh_plugin_options' );
+		$options = get_option( 'slwh_plugin_options', $this->default_options );
 		?>
 		<input id='slwh_plugin_setting_opening_closing_time' name='slwh_plugin_options[opening_closing_time]' type='text' value='<?php echo esc_attr( $options['opening_closing_time'] ); ?>' />
 		<span class="block_description">
@@ -233,12 +228,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_plugin_setting_override_status() {
-		$default_options = array(
-			'working_days'         => array(),
-			'opening_closing_time' => '',
-			'override_status'      => '0',
-		);
-		$options         = get_option( 'slwh_plugin_options' );
+		$options = get_option( 'slwh_plugin_options', $this->default_options );
 		// One of the values to compare.
 		$checked = 1;
 		// The other value to compare if not just true.
@@ -261,7 +251,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function get_slwh_condition() {
-		$slwh_options           = get_option( 'slwh_plugin_options' );
+		$slwh_options           = get_option( 'slwh_plugin_options', $this->default_options );
 		$slwh_options['status'] = null;
 
 		// Return early if the override_status is 1, regardless of the date or time.
