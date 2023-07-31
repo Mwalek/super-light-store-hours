@@ -266,7 +266,6 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 		// Return early if the override_status is 1, regardless of the date or time.
 		if ( '1' === $slwh_options['override_status'] ) {
-			ray( 1 );
 			$slwh_options['status'] = '1';
 			return $slwh_options;
 		}
@@ -275,7 +274,6 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 		// Check if current day of the week is on our list of working days.
 		if ( ! in_array( $day_of_week, $slwh_options['working_days'], true ) ) {
-			ray( 0 );
 			$slwh_options['status'] = '0';
 			return $slwh_options;
 		}
@@ -302,11 +300,9 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 		// Check if current time is between opening and closing time.
 		if ( $opening_time < $current_time && $current_time < $closing_time ) {
-			ray( 1 );
 			$slwh_options['status'] = '1';
 			return $slwh_options;
 		} else {
-			ray( 0 );
 			$slwh_options['status'] = '0';
 			return $slwh_options;
 		}

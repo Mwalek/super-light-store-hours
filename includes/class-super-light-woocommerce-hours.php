@@ -29,6 +29,8 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 			$admin    = new Super_Light_Woocommerce_Hours_Admin();
 			add_action( 'wp', array( $this, 'remove_add_to_cart_buttons_conditionally' ) );
 			add_action( 'plugins_loaded', array( $this, 'super_light_woocommerce_hours_load_textdomain' ) );
+			add_action( 'woocommerce_single_product_summary', array( $this, 'add_disabled_store_notice' ) );
+
 		}
 
 		/**
@@ -66,5 +68,13 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 			}
 		}
 
+		public function add_disabled_store_notice() {
+			$settings  = new Super_Light_Woocommerce_Hours_Settings();
+			$condition = $settings->get_slwh_condition();
+			$status    = $condition['status'];
+			if ( boolval( $status ) === false ) {
+				echo '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
+			}
+		}
 	}
 }
