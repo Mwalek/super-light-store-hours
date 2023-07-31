@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-26T20:14:25+00:00\n"
+"POT-Creation-Date: 2023-07-31T11:00:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: super-light-woocommerce-hours\n"
@@ -30,70 +30,78 @@ msgstr ""
 msgid "https://mwale.me"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:137
-msgid "Schedule Settings"
-msgstr ""
-
-#: includes/class-super-light-woocommerce-hours-settings.php:139
-msgid "Working Days"
-msgstr ""
-
-#: includes/class-super-light-woocommerce-hours-settings.php:140
-msgid "Opening & Closing Time"
+#: includes/class-super-light-woocommerce-hours-settings.php:91
+msgid "Store Operating Hours"
 msgstr ""
 
 #: includes/class-super-light-woocommerce-hours-settings.php:141
+msgid "Schedule Settings"
+msgstr ""
+
+#: includes/class-super-light-woocommerce-hours-settings.php:143
+msgid "Working Days"
+msgstr ""
+
+#: includes/class-super-light-woocommerce-hours-settings.php:144
+msgid "Opening & Closing Time"
+msgstr ""
+
+#: includes/class-super-light-woocommerce-hours-settings.php:145
 msgid "Enable/Disable Store"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:165
+#: includes/class-super-light-woocommerce-hours-settings.php:169
 msgid "Error: The opening and closing time should not exceed 24 (hours)."
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:171
+#: includes/class-super-light-woocommerce-hours-settings.php:175
 msgid "Error: The opening time should be earlier than the closing time."
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:180
+#: includes/class-super-light-woocommerce-hours-settings.php:184
 msgid "Error: Use the format HH - HH for the opening and closing time. For example, 08 - 18."
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:190
+#: includes/class-super-light-woocommerce-hours-settings.php:194
 msgid "Here you can set all the options regarding when you want to accept orders."
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:200
+#: includes/class-super-light-woocommerce-hours-settings.php:204
 msgid "Sunday"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:202
+#: includes/class-super-light-woocommerce-hours-settings.php:206
 msgid "Monday"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:204
+#: includes/class-super-light-woocommerce-hours-settings.php:208
 msgid "Tuesday"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:206
+#: includes/class-super-light-woocommerce-hours-settings.php:210
 msgid "Wednesday"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:208
+#: includes/class-super-light-woocommerce-hours-settings.php:212
 msgid "Thursday"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:210
+#: includes/class-super-light-woocommerce-hours-settings.php:214
 msgid "Friday"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:212
+#: includes/class-super-light-woocommerce-hours-settings.php:216
 msgid "Saturday"
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:227
+#: includes/class-super-light-woocommerce-hours-settings.php:231
 msgid "Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional."
 msgstr ""
 
-#: includes/class-super-light-woocommerce-hours-settings.php:258
+#: includes/class-super-light-woocommerce-hours-settings.php:262
 msgid "This option overrides other scheduling options."
+msgstr ""
+
+#: includes/class-super-light-woocommerce-hours-settings.php:326
+msgid "Settings"
 msgstr ""
