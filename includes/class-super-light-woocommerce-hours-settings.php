@@ -59,7 +59,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
 		add_action( 'rest_api_init', array( $this, 'slwh_register_settings' ) );
-		add_action( 'init', array( $this, 'get_slwh_status' ) );
+		add_action( 'init', array( $this, 'get_slwh_condition' ) );
 		add_action(
 			'rest_api_init',
 			function () {
@@ -76,7 +76,6 @@ class Super_Light_Woocommerce_Hours_Settings {
 		);
 		$dir = $path = dirname( plugin_basename( __DIR__ ), 1 );
 		add_filter( 'plugin_action_links_' . $dir . '/super-light-woocommerce-hours.php', array( $this, 'add_settings_page_link' ) );
-		ray( $dir )->red();
 
 	}
 
@@ -142,7 +141,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 			add_settings_field( 'slwh_plugin_setting_working_days', __( 'Working Days', 'super-light-woocommerce-hours' ), array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
 			add_settings_field( 'slwh_plugin_setting_opening_closing_time', __( 'Opening & Closing Time', 'super-light-woocommerce-hours' ), array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
-			add_settings_field( 'slwh_plugin_setting_override_status', __( 'Enable/Disable Store', 'super-light-woocommerce-hours' ), array( $this, 'slwh_plugin_setting_override_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_override_status', __( 'Enable Store', 'super-light-woocommerce-hours' ), array( $this, 'slwh_plugin_setting_override_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
 
 		}
 	}
@@ -265,7 +264,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		<?php
 	}
 
-	public function get_slwh_status() {
+	public function get_slwh_condition() {
 		$slwh_options           = get_option( 'slwh_plugin_options' );
 		$slwh_options['status'] = null;
 
@@ -318,7 +317,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function get_slwh_settings() {
-		return $this->get_slwh_status();
+		return $this->get_slwh_condition();
 	}
 
 	public function add_settings_page_link( array $links ) {
