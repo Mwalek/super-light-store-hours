@@ -74,6 +74,10 @@ class Super_Light_Woocommerce_Hours_Settings {
 				);
 			}
 		);
+		$dir = $path = dirname( plugin_basename( __DIR__ ), 1 );
+		add_filter( 'plugin_action_links_' . $dir . '/super-light-woocommerce-hours.php', array( $this, 'add_settings_page_link' ) );
+		ray( $dir )->red();
+
 	}
 
 	public function slwh_add_settings_page() {
@@ -315,6 +319,13 @@ class Super_Light_Woocommerce_Hours_Settings {
 
 	public function get_slwh_settings() {
 		return $this->get_slwh_status();
+	}
+
+	public function add_settings_page_link( array $links ) {
+		$url           = get_admin_url() . 'options-general.php?page=sl-woocommerce-hours';
+		$settings_link = '<a href="' . $url . '">' . __( 'Settings', 'super-light-woocommerce-hours' ) . '</a>';
+		array_unshift( $links, $settings_link );
+		return $links;
 	}
 
 }
