@@ -1,14 +1,17 @@
 <?php
 /**
  * Extends the main plugin class.
+ *
+ * @link https://github.com/Mwalek/super-light-woocommerce-hours
+ *
+ * @package    WordPress
+ * @subpackage Plugins
+ * @since      1.0.0
  */
 
-// if ( ! defined( 'ABSPATH' ) ) {
-// exit;
-// }
-
-// require_once 'class-super-light-woocommerce-hours-settings.php';
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Super_Light_Woocommerce_Hours_Settings {
 	/**
@@ -74,7 +77,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 				);
 			}
 		);
-		$dir = $path = dirname( plugin_basename( __DIR__ ), 1 );
+		$dir = dirname( plugin_basename( __DIR__ ), 1 );
 		add_filter( 'plugin_action_links_' . $dir . '/super-light-woocommerce-hours.php', array( $this, 'add_settings_page_link' ) );
 
 	}
@@ -156,30 +159,25 @@ class Super_Light_Woocommerce_Hours_Settings {
 				array_shift( $matches );
 				$prev_match = 0;
 				foreach ( $matches as $match ) {
-
 					/*
 					Make sure that
 					[1] provided values do not exceed 24 (hours).
 					[2] The first (prev) match is less than the current one.
 					*/
 					if ( 24 < $match ) {
-						// $input['opening_closing_time'] = '';
 						$input['opening_closing_time'] = $current_options['opening_closing_time'];
 						add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: The opening and closing time should not exceed 24 (hours).', 'super-light-woocommerce-hours' ) );
 						break;
 					}
 					if ( $prev_match > $match ) {
-						// $input['opening_closing_time'] = '';
 						$input['opening_closing_time'] = $current_options['opening_closing_time'];
 						add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: The opening time should be earlier than the closing time.', 'super-light-woocommerce-hours' ) );
 						break;
 					}
 					$prev_match = $match;
 				}
-				// ray( $input )->orange();
 				return $input;
 			} else {
-				// $input['opening_closing_time'] = '';
 				add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: Use the format HH - HH for the opening and closing time. For example, 08 - 18.', 'super-light-woocommerce-hours' ) );
 				$input['opening_closing_time'] = $current_options['opening_closing_time'];
 			}
@@ -241,8 +239,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 			'opening_closing_time' => '',
 			'override_status'      => '0',
 		);
-		// delete_option( 'slwh_plugin_options' );
-		$options = get_option( 'slwh_plugin_options' );
+		$options         = get_option( 'slwh_plugin_options' );
 		// One of the values to compare.
 		$checked = 1;
 		// The other value to compare if not just true.

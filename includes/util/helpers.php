@@ -15,6 +15,11 @@
  * Check if WooCommerce is activated
  */
 if ( ! function_exists( 'is_woocommerce_activated' ) ) {
+	/**
+	 * Checks if WooCommerce is activated
+	 *
+	 * @return boolean
+	 */
 	function is_woocommerce_activated() {
 		if ( class_exists( 'woocommerce' ) ) {
 			return true;
