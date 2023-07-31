@@ -84,7 +84,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 		?>
 			<div class="wrap">
 				<div class="main_content">
-					<h2>Store Operating Hours</h2>
+					<h2><?php esc_html_e( 'Store Operating Hours', 'super-light-woocommerce-hours' ); ?></h2>
 					<form action="options.php" method="post">
 					<?php
 					settings_fields( 'sl-woocommerce-hours' );
