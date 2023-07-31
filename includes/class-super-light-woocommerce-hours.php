@@ -55,7 +55,6 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 			$condition = $settings->get_slwh_condition();
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false && is_woocommerce_activated() ) {
-				ray( 'Woocommerce is active' )->purple();
 				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
 				remove_action( 'woocommerce_simple_add_to_cart', 'woocommerce_simple_add_to_cart', 30 );
 				remove_action( 'woocommerce_grouped_add_to_cart', 'woocommerce_grouped_add_to_cart', 30 );

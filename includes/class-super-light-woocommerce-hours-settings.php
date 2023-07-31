@@ -195,7 +195,6 @@ class Super_Light_Woocommerce_Hours_Settings {
 		$options           = get_option( 'slwh_plugin_options', array() );
 		$slwh_working_days = isset( $options['working_days'] )
 		? (array) $options['working_days'] : array();
-		ray( $options );
 		?>
 		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slwh_working_days, true ), 1 ); ?> value='Sunday'>
 		<label for='sunday'><?php esc_html_e( 'Sunday', 'super-light-woocommerce-hours' ); ?></label><br>
