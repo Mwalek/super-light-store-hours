@@ -1,5 +1,5 @@
 {
-  "name": "super-light-woocommerce-hours",
+  "name": "super-light-store-hours",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mwalek/super-light-woocommerce-hours.git"
+    "url": "git+https://github.com/Mwalek/super-light-store-hours.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Mwalek/super-light-woocommerce-hours/issues"
+    "url": "https://github.com/Mwalek/super-light-store-hours/issues"
   },
-  "homepage": "https://github.com/Mwalek/super-light-woocommerce-hours#readme",
+  "homepage": "https://github.com/Mwalek/super-light-store-hours#readme",
   "devDependencies": {
     "css-loader": "^6.8.1",
     "mini-css-extract-plugin": "^2.7.6",

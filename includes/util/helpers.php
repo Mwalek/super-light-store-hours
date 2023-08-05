@@ -4,7 +4,7 @@
  *
  * This file contains helper functions used throughout the plugin.
  *
- * @link https://github.com/Mwalek/super-light-woocommerce-hours
+ * @link https://github.com/Mwalek/super-light-store-hours
  *
  * @package    WordPress
  * @subpackage Plugins
