@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Woocommerce Store Hours
+ * Plugin Name: Super Light Store Hours
  * Description: Disable your store during fixed hours of the week or whenever you wish to pause orders.
  * Version: 0.0.1
  * Author: Mwale Kalenga
