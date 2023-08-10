@@ -88,7 +88,7 @@ class Super_Light_Store_Hours_Settings {
 	}
 
 	public function slwh_add_settings_page() {
-		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_options', 'sl-woocommerce-hours', array( $this, 'slwh_render_plugin_settings_page' ) );
+		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_options', 'sl-store-hours', array( $this, 'slwh_render_plugin_settings_page' ) );
 	}
 
 	public function slwh_render_plugin_settings_page() {
@@ -98,7 +98,7 @@ class Super_Light_Store_Hours_Settings {
 					<h2><?php esc_html_e( 'Store Operating Hours', 'super-light-store-hours' ); ?></h2>
 					<form action="options.php" method="post">
 					<?php
-					settings_fields( 'sl-woocommerce-hours' );
+					settings_fields( 'sl-store-hours' );
 					do_settings_sections( 'sl_woocommerce_hours' );
 					?>
 						<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
@@ -110,7 +110,7 @@ class Super_Light_Store_Hours_Settings {
 
 	public function slwh_register_settings() {
 		register_setting(
-			'sl-woocommerce-hours',
+			'sl-store-hours',
 			'slwh_plugin_options',
 			array(
 				'default'           => $this->default_options,
@@ -303,7 +303,7 @@ class Super_Light_Store_Hours_Settings {
 	}
 
 	public function add_settings_page_link( array $links ) {
-		$url           = get_admin_url() . 'options-general.php?page=sl-woocommerce-hours';
+		$url           = get_admin_url() . 'options-general.php?page=sl-store-hours';
 		$settings_link = '<a href="' . $url . '">' . __( 'Settings', 'super-light-store-hours' ) . '</a>';
 		array_unshift( $links, $settings_link );
 		return $links;
