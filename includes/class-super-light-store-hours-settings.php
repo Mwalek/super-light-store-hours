@@ -64,19 +64,19 @@ class Super_Light_Store_Hours_Settings {
 		'override_status'      => '0',
 	);
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'slwh_add_settings_page' ) );
-		add_action( 'admin_init', array( $this, 'slwh_register_settings' ) );
-		add_action( 'rest_api_init', array( $this, 'slwh_register_settings' ) );
-		add_action( 'init', array( $this, 'get_slwh_condition' ) );
+		add_action( 'admin_menu', array( $this, 'slsh_add_settings_page' ) );
+		add_action( 'admin_init', array( $this, 'slsh_register_settings' ) );
+		add_action( 'rest_api_init', array( $this, 'slsh_register_settings' ) );
+		add_action( 'init', array( $this, 'get_slsh_condition' ) );
 		add_action(
 			'rest_api_init',
 			function () {
 				register_rest_route(
-					'slwh/v1',
+					'slsh/v1',
 					'/state',
 					array(
 						'methods'             => 'GET',
-						'callback'            => array( $this, 'get_slwh_settings' ),
+						'callback'            => array( $this, 'get_slsh_settings' ),
 						'permission_callback' => '__return_true',
 					)
 				);
@@ -87,11 +87,11 @@ class Super_Light_Store_Hours_Settings {
 
 	}
 
-	public function slwh_add_settings_page() {
-		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_options', 'sl-store-hours', array( $this, 'slwh_render_plugin_settings_page' ) );
+	public function slsh_add_settings_page() {
+		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_options', 'sl-store-hours', array( $this, 'slsh_render_plugin_settings_page' ) );
 	}
 
-	public function slwh_render_plugin_settings_page() {
+	public function slsh_render_plugin_settings_page() {
 		?>
 			<div class="wrap">
 				<div class="main_content">
@@ -108,16 +108,16 @@ class Super_Light_Store_Hours_Settings {
 			<?php
 	}
 
-	public function slwh_register_settings() {
+	public function slsh_register_settings() {
 		register_setting(
 			'sl-store-hours',
-			'slwh_plugin_options',
+			'slsh_plugin_options',
 			array(
 				'default'           => $this->default_options,
 				'type'              => 'object',
 				'sanitize_callback' => array(
 					$this,
-					'slwh_plugin_options_validate',
+					'slsh_plugin_options_validate',
 				),
 				'show_in_rest'      => array(
 					'schema' => array(
@@ -140,17 +140,17 @@ class Super_Light_Store_Hours_Settings {
 
 		if ( function_exists( 'add_settings_section' ) ) {
 
-			add_settings_section( 'schedule_settings', __( 'Schedule Settings', 'super-light-store-hours' ), array( $this, 'slwh_plugin_section_text' ), 'sl_store_hours' );
+			add_settings_section( 'schedule_settings', __( 'Schedule Settings', 'super-light-store-hours' ), array( $this, 'slsh_plugin_section_text' ), 'sl_store_hours' );
 
-			add_settings_field( 'slwh_plugin_setting_working_days', __( 'Working Days', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_working_days' ), 'sl_store_hours', 'schedule_settings' );
-			add_settings_field( 'slwh_plugin_setting_opening_closing_time', __( 'Opening & Closing Time', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_store_hours', 'schedule_settings' );
-			add_settings_field( 'slwh_plugin_setting_override_status', __( 'Enable Store', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_override_status' ), 'sl_store_hours', 'schedule_settings' );
+			add_settings_field( 'slsh_plugin_setting_working_days', __( 'Working Days', 'super-light-store-hours' ), array( $this, 'slsh_plugin_setting_working_days' ), 'sl_store_hours', 'schedule_settings' );
+			add_settings_field( 'slsh_plugin_setting_opening_closing_time', __( 'Opening & Closing Time', 'super-light-store-hours' ), array( $this, 'slsh_plugin_setting_opening_closing_time' ), 'sl_store_hours', 'schedule_settings' );
+			add_settings_field( 'slsh_plugin_setting_override_status', __( 'Enable Store', 'super-light-store-hours' ), array( $this, 'slsh_plugin_setting_override_status' ), 'sl_store_hours', 'schedule_settings' );
 
 		}
 	}
 
-	public function slwh_plugin_options_validate( $input ) {
-		$current_options = get_option( 'slwh_plugin_options', $this->default_options );
+	public function slsh_plugin_options_validate( $input ) {
+		$current_options = get_option( 'slsh_plugin_options', $this->default_options );
 		// Add 0 as the override_status value if it's not currently set.
 		$input['override_status'] ??= '0';
 		if ( isset( $input['opening_closing_time'] ) ) {
@@ -166,19 +166,19 @@ class Super_Light_Store_Hours_Settings {
 					*/
 					if ( 24 < $match ) {
 						$input['opening_closing_time'] = $current_options['opening_closing_time'];
-						add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: The opening and closing time should not exceed 24 (hours).', 'super-light-store-hours' ) );
+						add_settings_error( 'slsh_plugin_setting_opening_closing_time', 'slsh_plugin_options[opening_closing_time]', __( 'Error: The opening and closing time should not exceed 24 (hours).', 'super-light-store-hours' ) );
 						break;
 					}
 					if ( $prev_match > $match ) {
 						$input['opening_closing_time'] = $current_options['opening_closing_time'];
-						add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: The opening time should be earlier than the closing time.', 'super-light-store-hours' ) );
+						add_settings_error( 'slsh_plugin_setting_opening_closing_time', 'slsh_plugin_options[opening_closing_time]', __( 'Error: The opening time should be earlier than the closing time.', 'super-light-store-hours' ) );
 						break;
 					}
 					$prev_match = $match;
 				}
 				return $input;
 			} else {
-				add_settings_error( 'slwh_plugin_setting_opening_closing_time', 'slwh_plugin_options[opening_closing_time]', __( 'Error: Use the format HH - HH for the opening and closing time. For example, 08 - 18.', 'super-light-store-hours' ) );
+				add_settings_error( 'slsh_plugin_setting_opening_closing_time', 'slsh_plugin_options[opening_closing_time]', __( 'Error: Use the format HH - HH for the opening and closing time. For example, 08 - 18.', 'super-light-store-hours' ) );
 				$input['opening_closing_time'] = $current_options['opening_closing_time'];
 			}
 		}
@@ -187,36 +187,36 @@ class Super_Light_Store_Hours_Settings {
 
 	}
 
-	public function slwh_plugin_section_text() {
+	public function slsh_plugin_section_text() {
 		esc_html_e( 'Here you can set all the options regarding when you want to accept orders.', 'super-light-store-hours' );
 	}
 
-	public function slwh_plugin_setting_working_days() {
-		$options           = get_option( 'slwh_plugin_options', $this->default_options );
-		$slwh_working_days = isset( $options['working_days'] )
+	public function slsh_plugin_setting_working_days() {
+		$options           = get_option( 'slsh_plugin_options', $this->default_options );
+		$slsh_working_days = isset( $options['working_days'] )
 		? (array) $options['working_days'] : array();
 		?>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slwh_working_days, true ), 1 ); ?> value='Sunday'>
+		<input type='checkbox' name='slsh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slsh_working_days, true ), 1 ); ?> value='Sunday'>
 		<label for='sunday'><?php esc_html_e( 'Sunday', 'super-light-store-hours' ); ?></label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='monday' <?php checked( in_array( 'Monday', $slwh_working_days, true ), 1 ); ?> value='Monday'>
+		<input type='checkbox' name='slsh_plugin_options[working_days][]' id='monday' <?php checked( in_array( 'Monday', $slsh_working_days, true ), 1 ); ?> value='Monday'>
 		<label for='monday'><?php esc_html_e( 'Monday', 'super-light-store-hours' ); ?></label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='tuesday' <?php checked( in_array( 'Tuesday', $slwh_working_days, true ), 1 ); ?> value='Tuesday'>
+		<input type='checkbox' name='slsh_plugin_options[working_days][]' id='tuesday' <?php checked( in_array( 'Tuesday', $slsh_working_days, true ), 1 ); ?> value='Tuesday'>
 		<label for='tuesday'><?php esc_html_e( 'Tuesday', 'super-light-store-hours' ); ?></label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='wednesday' <?php checked( in_array( 'Wednesday', $slwh_working_days, true ), 1 ); ?> value='Wednesday'>
+		<input type='checkbox' name='slsh_plugin_options[working_days][]' id='wednesday' <?php checked( in_array( 'Wednesday', $slsh_working_days, true ), 1 ); ?> value='Wednesday'>
 		<label for='wednesday'><?php esc_html_e( 'Wednesday', 'super-light-store-hours' ); ?></label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='thursday' <?php checked( in_array( 'Thursday', $slwh_working_days, true ), 1 ); ?> value='Thursday'>
+		<input type='checkbox' name='slsh_plugin_options[working_days][]' id='thursday' <?php checked( in_array( 'Thursday', $slsh_working_days, true ), 1 ); ?> value='Thursday'>
 		<label for='thursday'><?php esc_html_e( 'Thursday', 'super-light-store-hours' ); ?></label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='friday' <?php checked( in_array( 'Friday', $slwh_working_days, true ), 1 ); ?> value='Friday'>
+		<input type='checkbox' name='slsh_plugin_options[working_days][]' id='friday' <?php checked( in_array( 'Friday', $slsh_working_days, true ), 1 ); ?> value='Friday'>
 		<label for='friday'><?php esc_html_e( 'Friday', 'super-light-store-hours' ); ?></label><br>
-		<input type='checkbox' name='slwh_plugin_options[working_days][]' id='saturday' <?php checked( in_array( 'Saturday', $slwh_working_days, true ), 1 ); ?> value='Saturday'>
+		<input type='checkbox' name='slsh_plugin_options[working_days][]' id='saturday' <?php checked( in_array( 'Saturday', $slsh_working_days, true ), 1 ); ?> value='Saturday'>
 		<label for='saturday'><?php esc_html_e( 'Saturday', 'super-light-store-hours' ); ?></label><br>
 		<?php
 	}
 
-	public function slwh_plugin_setting_opening_closing_time() {
-		$options = get_option( 'slwh_plugin_options', $this->default_options );
+	public function slsh_plugin_setting_opening_closing_time() {
+		$options = get_option( 'slsh_plugin_options', $this->default_options );
 		?>
-		<input id='slwh_plugin_setting_opening_closing_time' name='slwh_plugin_options[opening_closing_time]' type='text' value='<?php echo esc_attr( $options['opening_closing_time'] ); ?>' />
+		<input id='slsh_plugin_setting_opening_closing_time' name='slsh_plugin_options[opening_closing_time]' type='text' value='<?php echo esc_attr( $options['opening_closing_time'] ); ?>' />
 		<span class="block_description">
 			<?php
 			$operating_hrs_desc = __( 'Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.', 'super-light-store-hours' );
@@ -227,8 +227,8 @@ class Super_Light_Store_Hours_Settings {
 		<?php
 	}
 
-	public function slwh_plugin_setting_override_status() {
-		$options = get_option( 'slwh_plugin_options', $this->default_options );
+	public function slsh_plugin_setting_override_status() {
+		$options = get_option( 'slsh_plugin_options', $this->default_options );
 		// One of the values to compare.
 		$checked = 1;
 		// The other value to compare if not just true.
@@ -238,7 +238,7 @@ class Super_Light_Store_Hours_Settings {
 		$display = true;
 		?>
 		<label class="switch">
-		<input type='checkbox' name='slwh_plugin_options[override_status]' id='override_status' <?php checked( $checked, $current, $display ); ?> value='1' >
+		<input type='checkbox' name='slsh_plugin_options[override_status]' id='override_status' <?php checked( $checked, $current, $display ); ?> value='1' >
 
 			<span class="slider round"></span>
 		</label>
@@ -250,26 +250,26 @@ class Super_Light_Store_Hours_Settings {
 		<?php
 	}
 
-	public function get_slwh_condition() {
-		$slwh_options           = get_option( 'slwh_plugin_options', $this->default_options );
-		$slwh_options['status'] = null;
+	public function get_slsh_condition() {
+		$slsh_options           = get_option( 'slsh_plugin_options', $this->default_options );
+		$slsh_options['status'] = null;
 
 		// Return early if the override_status is 1, regardless of the date or time.
-		if ( '1' === $slwh_options['override_status'] ) {
-			$slwh_options['status'] = '1';
-			return $slwh_options;
+		if ( '1' === $slsh_options['override_status'] ) {
+			$slsh_options['status'] = '1';
+			return $slsh_options;
 		}
 		$current_datetime_obj = current_datetime();
 		$day_of_week          = $current_datetime_obj->format( 'l' );
 
 		// Check if current day of the week is on our list of working days.
-		if ( ! in_array( $day_of_week, $slwh_options['working_days'], true ) ) {
-			$slwh_options['status'] = '0';
-			return $slwh_options;
+		if ( ! in_array( $day_of_week, $slsh_options['working_days'], true ) ) {
+			$slsh_options['status'] = '0';
+			return $slsh_options;
 		}
 
 		$current_time    = strtotime( $current_datetime_obj->format( 'H:i:s' ) );
-		$raw_time_range  = $slwh_options['opening_closing_time'];
+		$raw_time_range  = $slsh_options['opening_closing_time'];
 		$operating_hours = explode( '-', $raw_time_range );
 
 		if ( ! function_exists( 'format_plain_hours' ) ) {
@@ -290,16 +290,16 @@ class Super_Light_Store_Hours_Settings {
 
 		// Check if current time is between opening and closing time.
 		if ( $opening_time < $current_time && $current_time < $closing_time ) {
-			$slwh_options['status'] = '1';
-			return $slwh_options;
+			$slsh_options['status'] = '1';
+			return $slsh_options;
 		} else {
-			$slwh_options['status'] = '0';
-			return $slwh_options;
+			$slsh_options['status'] = '0';
+			return $slsh_options;
 		}
 	}
 
-	public function get_slwh_settings() {
-		return $this->get_slwh_condition();
+	public function get_slsh_settings() {
+		return $this->get_slsh_condition();
 	}
 
 	public function add_settings_page_link( array $links ) {

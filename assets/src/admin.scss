@@ -1,6 +1,6 @@
 @use "sass:meta";
 
-.slwh_admin_wrapper {
+.slsh_admin_wrapper {
   @include meta.load-css("toggle-switch-slider");
 
   margin-top: 10px;

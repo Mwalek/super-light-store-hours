@@ -23,7 +23,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 
 		public function __construct() {
 			// Register the function that's invoked when the plugin is activated.
-			register_activation_hook( __FILE__, 'slwh_set_up_plugin' );
+			register_activation_hook( __FILE__, 'slsh_set_up_plugin' );
 
 			$settings = new Super_Light_Store_Hours_Settings();
 			$admin    = new Super_Light_Store_Hours_Admin();
@@ -38,7 +38,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 		 *
 		 * @return void
 		 */
-		public function slwh_set_up_plugin() {
+		public function slsh_set_up_plugin() {
 			// Create or upgrade the database.
 		}
 
@@ -54,7 +54,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 
 		public function remove_add_to_cart_buttons_conditionally() {
 			$settings  = new Super_Light_Store_Hours_Settings();
-			$condition = $settings->get_slwh_condition();
+			$condition = $settings->get_slsh_condition();
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false && is_woocommerce_activated() ) {
 				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
@@ -70,7 +70,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 
 		public function add_disabled_store_notice() {
 			$settings  = new Super_Light_Store_Hours_Settings();
-			$condition = $settings->get_slwh_condition();
+			$condition = $settings->get_slsh_condition();
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false ) {
 				echo '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';

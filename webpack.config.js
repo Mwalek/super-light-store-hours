@@ -2,12 +2,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 module.exports = {
-  entry: { slwh_admin_style: "./assets/src/admin.scss" },
+  entry: { slsh_admin_style: "./assets/src/admin.scss" },
   plugins: [
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "slwh_admin_style.css",
+      filename: "slsh_admin_style.css",
       chunkFilename: "[id].css",
     }),
   ],
