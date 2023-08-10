@@ -27,7 +27,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-super-light-store-hours.ph
  * @return void
  */
 function run_super_light_woocommerce_hours() {
-	$plugin = new Super_Light_Woocommerce_Hours();
+	$plugin = new Super_Light_Store_Hours();
 }
 
 run_super_light_woocommerce_hours();

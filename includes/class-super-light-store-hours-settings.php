@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Super_Light_Woocommerce_Hours_Settings {
+class Super_Light_Store_Hours_Settings {
 	/**
 	 * An array of allowed HTML elements and attributes.
 	 *
@@ -88,7 +88,7 @@ class Super_Light_Woocommerce_Hours_Settings {
 	}
 
 	public function slwh_add_settings_page() {
-		add_options_page( 'Woocommerce Store Hours', 'Store Hours', 'manage_options', 'sl-woocommerce-hours', array( $this, 'slwh_render_plugin_settings_page' ) );
+		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_options', 'sl-woocommerce-hours', array( $this, 'slwh_render_plugin_settings_page' ) );
 	}
 
 	public function slwh_render_plugin_settings_page() {

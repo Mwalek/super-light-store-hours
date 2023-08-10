@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Super_Light_Woocommerce_Hours_Admin' ) ) {
-	class Super_Light_Woocommerce_Hours_Admin {
+if ( ! class_exists( 'Super_Light_Store_Hours_Admin' ) ) {
+	class Super_Light_Store_Hours_Admin {
 		public function __construct() {
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_slwh_scripts' ) );
 			add_filter( 'admin_body_class', array( $this, 'add_slwh_body_class' ) );

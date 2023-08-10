@@ -17,16 +17,16 @@ require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/class-super-lig
  */
 require_once plugin_dir_path( dirname( __FILE__ ) ) . '/admin/class-super-light-store-hours-admin.php';
 
-if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
+if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 
-	class Super_Light_Woocommerce_Hours {
+	class Super_Light_Store_Hours {
 
 		public function __construct() {
 			// Register the function that's invoked when the plugin is activated.
 			register_activation_hook( __FILE__, 'slwh_set_up_plugin' );
 
-			$settings = new Super_Light_Woocommerce_Hours_Settings();
-			$admin    = new Super_Light_Woocommerce_Hours_Admin();
+			$settings = new Super_Light_Store_Hours_Settings();
+			$admin    = new Super_Light_Store_Hours_Admin();
 			add_action( 'wp', array( $this, 'remove_add_to_cart_buttons_conditionally' ) );
 			add_action( 'plugins_loaded', array( $this, 'super_light_woocommerce_hours_load_textdomain' ) );
 			add_action( 'woocommerce_single_product_summary', array( $this, 'add_disabled_store_notice' ) );
@@ -53,7 +53,7 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 		}
 
 		public function remove_add_to_cart_buttons_conditionally() {
-			$settings  = new Super_Light_Woocommerce_Hours_Settings();
+			$settings  = new Super_Light_Store_Hours_Settings();
 			$condition = $settings->get_slwh_condition();
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false && is_woocommerce_activated() ) {
@@ -69,7 +69,7 @@ if ( ! class_exists( 'Super_Light_Woocommerce_Hours' ) ) {
 		}
 
 		public function add_disabled_store_notice() {
-			$settings  = new Super_Light_Woocommerce_Hours_Settings();
+			$settings  = new Super_Light_Store_Hours_Settings();
 			$condition = $settings->get_slwh_condition();
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false ) {
