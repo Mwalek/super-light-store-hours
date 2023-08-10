@@ -99,7 +99,7 @@ class Super_Light_Store_Hours_Settings {
 					<form action="options.php" method="post">
 					<?php
 					settings_fields( 'sl-store-hours' );
-					do_settings_sections( 'sl_woocommerce_hours' );
+					do_settings_sections( 'sl_store_hours' );
 					?>
 						<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
 					</form>
@@ -140,11 +140,11 @@ class Super_Light_Store_Hours_Settings {
 
 		if ( function_exists( 'add_settings_section' ) ) {
 
-			add_settings_section( 'schedule_settings', __( 'Schedule Settings', 'super-light-store-hours' ), array( $this, 'slwh_plugin_section_text' ), 'sl_woocommerce_hours' );
+			add_settings_section( 'schedule_settings', __( 'Schedule Settings', 'super-light-store-hours' ), array( $this, 'slwh_plugin_section_text' ), 'sl_store_hours' );
 
-			add_settings_field( 'slwh_plugin_setting_working_days', __( 'Working Days', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_working_days' ), 'sl_woocommerce_hours', 'schedule_settings' );
-			add_settings_field( 'slwh_plugin_setting_opening_closing_time', __( 'Opening & Closing Time', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_woocommerce_hours', 'schedule_settings' );
-			add_settings_field( 'slwh_plugin_setting_override_status', __( 'Enable Store', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_override_status' ), 'sl_woocommerce_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_working_days', __( 'Working Days', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_working_days' ), 'sl_store_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_opening_closing_time', __( 'Opening & Closing Time', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_opening_closing_time' ), 'sl_store_hours', 'schedule_settings' );
+			add_settings_field( 'slwh_plugin_setting_override_status', __( 'Enable Store', 'super-light-store-hours' ), array( $this, 'slwh_plugin_setting_override_status' ), 'sl_store_hours', 'schedule_settings' );
 
 		}
 	}
