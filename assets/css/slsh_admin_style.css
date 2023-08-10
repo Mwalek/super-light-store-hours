@@ -1,0 +1,71 @@
+/*!****************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./assets/src/admin.scss ***!
+  \****************************************************************************************************************/
+.slsh_admin_wrapper {
+  /* The switch - the box around the slider */
+  /* Hide default HTML checkbox */
+  /* The slider */
+  /* Rounded sliders */
+  margin-top: 10px;
+}
+.slsh_admin_wrapper .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+.slsh_admin_wrapper .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slsh_admin_wrapper .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.slsh_admin_wrapper .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.slsh_admin_wrapper input:checked + .slider {
+  background-color: #4caf50;
+}
+.slsh_admin_wrapper input:focus + .slider {
+  box-shadow: 0 0 1px #4caf50;
+}
+.slsh_admin_wrapper input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+.slsh_admin_wrapper .slider.round {
+  border-radius: 34px;
+}
+.slsh_admin_wrapper .slider.round:before {
+  border-radius: 50%;
+}
+.slsh_admin_wrapper .notice {
+  margin: 5px 0 15px;
+}
+.slsh_admin_wrapper #wpbody-content {
+  margin-right: 20px;
+}
+.slsh_admin_wrapper .block_description {
+  display: block;
+  margin: 10px auto;
+  padding: 5px;
+}
