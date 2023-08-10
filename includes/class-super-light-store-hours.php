@@ -28,7 +28,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			$settings = new Super_Light_Store_Hours_Settings();
 			$admin    = new Super_Light_Store_Hours_Admin();
 			add_action( 'wp', array( $this, 'remove_add_to_cart_buttons_conditionally' ) );
-			add_action( 'plugins_loaded', array( $this, 'super_light_woocommerce_hours_load_textdomain' ) );
+			add_action( 'plugins_loaded', array( $this, 'super_light_store_hours_load_textdomain' ) );
 			add_action( 'woocommerce_single_product_summary', array( $this, 'add_disabled_store_notice' ) );
 
 		}
@@ -47,7 +47,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 		 *
 		 * @return void
 		 */
-		public function super_light_woocommerce_hours_load_textdomain() {
+		public function super_light_store_hours_load_textdomain() {
 			$path = dirname( plugin_basename( __DIR__ ), 1 ) . '/languages/';
 			load_plugin_textdomain( 'super-light-store-hours', false, $path );
 		}
