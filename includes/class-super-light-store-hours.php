@@ -30,6 +30,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			add_action( 'wp', array( $this, 'remove_add_to_cart_buttons_conditionally' ) );
 			add_action( 'plugins_loaded', array( $this, 'super_light_store_hours_load_textdomain' ) );
 			add_action( 'woocommerce_single_product_summary', array( $this, 'add_disabled_store_notice' ) );
+			add_action( 'woocommerce_proceed_to_checkout', array( $this, 'add_disabled_store_notice' ) );
 
 		}
 
@@ -65,6 +66,8 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 				remove_action( 'woocommerce_single_variation', 'woocommerce_single_variation_add_to_cart_button', 20 );
 				// Remove add to cart button from loop (archive page).
 				remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+				// Remove 'proceed to checkout' button.
+				remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
 			}
 		}
 
