@@ -83,11 +83,10 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 		public function remove_place_order_button( $button_html ) {
 			// $button_html = '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
 			// return $button_html;
-			$button_html = self::produce_disabled_store_notice( false );
-			// ray( $button_html );
+			$button_html = $this->produce_disabled_store_notice( false );
 			return $button_html;
 		}
-		public static function produce_disabled_store_notice( $print = true ) {
+		public function produce_disabled_store_notice( $print = true ) {
 			$settings  = new Super_Light_Store_Hours_Settings();
 			$condition = $settings->get_slsh_condition();
 			$status    = $condition['status'];
