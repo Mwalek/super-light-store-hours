@@ -31,6 +31,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			add_action( 'plugins_loaded', array( $this, 'super_light_store_hours_load_textdomain' ) );
 			add_action( 'woocommerce_single_product_summary', array( $this, 'add_disabled_store_notice' ) );
 			add_action( 'woocommerce_proceed_to_checkout', array( $this, 'add_disabled_store_notice' ) );
+			add_filter( 'woocommerce_order_button_html', array( $this, 'remove_place_order_button' ) );
 
 		}
 
@@ -77,6 +78,26 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false ) {
 				echo '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
+			}
+		}
+		public function remove_place_order_button( $button_html ) {
+			// $button_html = '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
+			// return $button_html;
+			$button_html = self::produce_disabled_store_notice( false );
+			// ray( $button_html );
+			return $button_html;
+		}
+		public static function produce_disabled_store_notice( $print = true ) {
+			$settings  = new Super_Light_Store_Hours_Settings();
+			$condition = $settings->get_slsh_condition();
+			$status    = $condition['status'];
+			if ( boolval( $status ) === false ) {
+				if ( true === $print ) {
+					echo '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
+				} else {
+					return '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
+
+				}
 			}
 		}
 	}
