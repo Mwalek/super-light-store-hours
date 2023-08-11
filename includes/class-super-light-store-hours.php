@@ -21,6 +21,8 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 
 	class Super_Light_Store_Hours {
 
+		private static $store_closed_message = '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later.</div>';
+
 		public function __construct() {
 			// Register the function that's invoked when the plugin is activated.
 			register_activation_hook( __FILE__, 'slsh_set_up_plugin' );
@@ -77,12 +79,10 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			$condition = $settings->get_slsh_condition();
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false ) {
-				echo '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
+				echo self::$store_closed_message;
 			}
 		}
 		public function remove_place_order_button( $button_html ) {
-			// $button_html = '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
-			// return $button_html;
 			$button_html = $this->produce_disabled_store_notice( false );
 			return $button_html;
 		}
@@ -92,9 +92,9 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false ) {
 				if ( true === $print ) {
-					echo '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
+					echo self::$store_closed_message;
 				} else {
-					return '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later ...</div>';
+					return self::$store_closed_message;
 
 				}
 			}
