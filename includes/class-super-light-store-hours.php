@@ -86,7 +86,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			$this->produce_disabled_store_notice();
 		}
 		public function remove_place_order_button( $button_html ) {
-			$button_html = $this->return_disabled_store_notice();
+			$button_html = $this->return_disabled_store_notice() ?? $button_html;
 			return $button_html;
 		}
 		private function produce_disabled_store_notice( $print = true ) {
