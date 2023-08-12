@@ -23,18 +23,18 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 
 		private static $store_closed_message = '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later.</div>';
 
+		private $settings;
+
 		public function __construct() {
 			// Register the function that's invoked when the plugin is activated.
 			register_activation_hook( __FILE__, 'slsh_set_up_plugin' );
 
-			$settings = new Super_Light_Store_Hours_Settings();
-			$admin    = new Super_Light_Store_Hours_Admin();
-			add_action( 'wp', array( $this, 'remove_add_to_cart_buttons_conditionally' ) );
+			$this->settings = new Super_Light_Store_Hours_Settings();
+			$admin          = new Super_Light_Store_Hours_Admin();
+			add_action( 'setup_theme', array( $this, 'remove_add_to_cart_buttons_conditionally' ), 10 );
 			add_action( 'plugins_loaded', array( $this, 'super_light_store_hours_load_textdomain' ) );
-			add_action( 'woocommerce_single_product_summary', array( $this, 'add_disabled_store_notice' ) );
-			add_action( 'woocommerce_proceed_to_checkout', array( $this, 'add_disabled_store_notice' ) );
+			add_action( 'woocommerce_proceed_to_checkout', array( $this, 'print_disabled_store_notice' ) );
 			add_filter( 'woocommerce_order_button_html', array( $this, 'remove_place_order_button' ) );
-
 		}
 
 		/**
@@ -57,16 +57,21 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 		}
 
 		public function remove_add_to_cart_buttons_conditionally() {
-			$settings  = new Super_Light_Store_Hours_Settings();
-			$condition = $settings->get_slsh_condition();
+			$condition = $this->settings->get_slsh_condition();
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false && is_woocommerce_activated() ) {
-				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+				// Line below removes summary AND 'add to cart' button.
+				// remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
 				remove_action( 'woocommerce_simple_add_to_cart', 'woocommerce_simple_add_to_cart', 30 );
+				add_action( 'woocommerce_simple_add_to_cart', array( $this, 'print_disabled_store_notice' ) );
 				remove_action( 'woocommerce_grouped_add_to_cart', 'woocommerce_grouped_add_to_cart', 30 );
+				add_action( 'woocommerce_grouped_add_to_cart', array( $this, 'print_disabled_store_notice' ) );
 				remove_action( 'woocommerce_variable_add_to_cart', 'woocommerce_variable_add_to_cart', 30 );
+				add_action( 'woocommerce_variable_add_to_cart', array( $this, 'print_disabled_store_notice' ) );
 				remove_action( 'woocommerce_external_add_to_cart', 'woocommerce_external_add_to_cart', 30 );
+				add_action( 'woocommerce_external_add_to_cart', array( $this, 'print_disabled_store_notice' ) );
 				remove_action( 'woocommerce_single_variation', 'woocommerce_single_variation_add_to_cart_button', 20 );
+				add_action( 'woocommerce_single_variation', array( $this, 'print_disabled_store_notice' ) );
 				// Remove add to cart button from loop (archive page).
 				remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
 				// Remove 'proceed to checkout' button.
@@ -74,28 +79,24 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			}
 		}
 
-		public function add_disabled_store_notice() {
-			$settings  = new Super_Light_Store_Hours_Settings();
-			$condition = $settings->get_slsh_condition();
-			$status    = $condition['status'];
-			if ( boolval( $status ) === false ) {
-				echo self::$store_closed_message;
-			}
+		public function return_disabled_store_notice() {
+			return $this->produce_disabled_store_notice( false );
+		}
+		public function print_disabled_store_notice() {
+			$this->produce_disabled_store_notice();
 		}
 		public function remove_place_order_button( $button_html ) {
-			$button_html = $this->produce_disabled_store_notice( false );
+			$button_html = $this->return_disabled_store_notice();
 			return $button_html;
 		}
-		public function produce_disabled_store_notice( $print = true ) {
-			$settings  = new Super_Light_Store_Hours_Settings();
-			$condition = $settings->get_slsh_condition();
+		private function produce_disabled_store_notice( $print = true ) {
+			$condition = $this->settings->get_slsh_condition();
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false ) {
 				if ( true === $print ) {
 					echo self::$store_closed_message;
 				} else {
 					return self::$store_closed_message;
-
 				}
 			}
 		}
