@@ -8,14 +8,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once 'util/helpers.php';
+require_once __DIR__ . '/util/helpers.php';
 
-require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/class-super-light-store-hours-settings.php';
+require_once __DIR__ . '/class-super-light-store-hours-settings.php';
 
 /**
  * The class responsible for defining all actions that occur in the admin area.
  */
-require_once plugin_dir_path( dirname( __FILE__ ) ) . '/admin/class-super-light-store-hours-admin.php';
+require_once realpath( __DIR__ . '/../admin/class-super-light-store-hours-admin.php' );
 
 if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 

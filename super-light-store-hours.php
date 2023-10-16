@@ -1,5 +1,17 @@
 <?php
 /**
+ * The plugin bootstrap file
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://mwale.me
+ * @since             1.0.0
+ * @package           Super_Light_Store_Hours
+ *
+ * @wordpress-plugin
  * Plugin Name: Super Light Store Hours
  * Description: Disable your store during fixed hours of the week or whenever you wish to pause orders.
  * Version: 0.0.1
@@ -19,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-super-light-store-hours.php';
+require __DIR__ . '/includes/class-super-light-store-hours.php';
 
 /**
  * Begins execution of the plugin.
