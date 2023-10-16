@@ -14,18 +14,13 @@
 namespace MwaleMe\Super_Light_Store_Hours;
 
 /**
- * Check if WooCommerce is activated
+ * Checks if WooCommerce is activated
+ *
+ * @return boolean
  */
-if ( ! function_exists( 'is_woocommerce_activated' ) ) {
-	/**
-	 * Checks if WooCommerce is activated
-	 *
-	 * @return boolean
-	 */
-	function is_woocommerce_activated() {
-		if ( class_exists( 'woocommerce' ) ) {
-			return true;
-		} else {
-			return false; }
-	}
+function is_woocommerce_activated() {
+	if ( class_exists( 'woocommerce' ) ) {
+		return true;
+	} else {
+		return false; }
 }
