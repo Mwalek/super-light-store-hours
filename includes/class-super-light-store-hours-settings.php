@@ -9,6 +9,8 @@
  * @since      1.0.0
  */
 
+namespace MwaleMe\Super_Light_Store_Hours;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -272,7 +274,7 @@ class Super_Light_Store_Hours_Settings {
 		$raw_time_range  = $slsh_options['opening_closing_time'];
 		$operating_hours = explode( '-', $raw_time_range );
 
-		if ( ! function_exists( 'format_plain_hours' ) ) {
+		if ( ! function_exists( __NAMESPACE__ . '\format_plain_hours' ) ) {
 			/**
 			 * Takes a plain number and returns a valid time string (e.g 14 => 14:00:00)
 			 *

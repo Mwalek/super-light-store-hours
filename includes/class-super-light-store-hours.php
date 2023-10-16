@@ -3,6 +3,8 @@
  * The file containing the main plugin class.
  */
 
+namespace MwaleMe\Super_Light_Store_Hours;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

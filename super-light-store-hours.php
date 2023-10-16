@@ -22,6 +22,8 @@
  * Domain Path: /languages
  */
 
+namespace MwaleMe\Super_Light_Store_Hours;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

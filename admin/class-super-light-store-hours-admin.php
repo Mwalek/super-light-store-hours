@@ -3,6 +3,7 @@
  * The admin facing side of the plugin.
  */
 
+namespace MwaleMe\Super_Light_Store_Hours;
 
 // Exit if file is accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

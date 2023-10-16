@@ -11,6 +11,8 @@
  * @since      1.0.0
  */
 
+namespace MwaleMe\Super_Light_Store_Hours;
+
 /**
  * Check if WooCommerce is activated
  */
