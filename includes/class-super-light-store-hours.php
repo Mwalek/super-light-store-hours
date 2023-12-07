@@ -23,6 +23,55 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 
 	class Super_Light_Store_Hours {
 
+		/**
+		 * An array of allowed HTML elements and attributes.
+		 *
+		 * @var array
+		 */
+		public $allowed_html = array(
+			'input'    => array(
+				'name'        => array(),
+				'id'          => array(),
+				'type'        => array(),
+				'placeholder' => array(),
+				'value'       => array(),
+			),
+			'select'   => array(
+				'name'     => array(),
+				'id'       => array(),
+				'disabled' => array(),
+			),
+			'option'   => array(
+				'value'    => array(),
+				'selected' => array(),
+
+			),
+			'textarea' => array(
+				'name'        => array(),
+				'id'          => array(),
+				'placeholder' => array(),
+			),
+			'span'     => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'p'        => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'br'       => array(),
+			'em'       => array(),
+			'strong'   => array(),
+			'fieldset' => array(),
+			'hr'       => array(),
+			'code'     => array(),
+			'div'      => array(
+				'class' => array(),
+				'style' => array(),
+			),
+
+		);
+
 		private static $store_closed_message = '<div class="disabled_store_notice" style="margin: 15px auto; padding: 10px; background-color: #f4f498;">Store temporarily closed. Please check back later.</div>';
 
 		private $settings;
@@ -96,7 +145,7 @@ if ( ! class_exists( 'Super_Light_Store_Hours' ) ) {
 			$status    = $condition['status'];
 			if ( boolval( $status ) === false ) {
 				if ( true === $print ) {
-					echo self::$store_closed_message;
+					echo wp_kses( self::$store_closed_message, $this->allowed_html );
 				} else {
 					return self::$store_closed_message;
 				}
