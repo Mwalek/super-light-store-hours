@@ -86,11 +86,17 @@ class Super_Light_Store_Hours_Settings {
 		);
 		$dir = dirname( plugin_basename( __DIR__ ), 1 );
 		add_filter( 'plugin_action_links_' . $dir . '/super-light-store-hours.php', array( $this, 'add_settings_page_link' ) );
+		add_filter(
+			'option_page_capability_sl-store-hours',
+			function( $capability ) {
+				return 'manage_woocommerce';
+			}
+		);
 
 	}
 
 	public function slsh_add_settings_page() {
-		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_options', 'sl-store-hours', array( $this, 'slsh_render_plugin_settings_page' ) );
+		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_woocommerce', 'sl-store-hours', array( $this, 'slsh_render_plugin_settings_page' ) );
 	}
 
 	public function slsh_render_plugin_settings_page() {
