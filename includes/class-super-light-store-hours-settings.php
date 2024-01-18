@@ -114,10 +114,11 @@ class Super_Light_Store_Hours_Settings {
 		add_filter( 'plugin_action_links_' . $dir . '/super-light-store-hours.php', array( $this, 'add_settings_page_link' ) );
 
 		// Set capability for options page to manage WooCommerce capability.
+
 		add_filter(
 			'option_page_capability_sl-store-hours',
 			function( $capability ) {
-				return 'manage_woocommerce';
+				return is_woocommerce_activated() ? 'manage_woocommerce' : $capability;
 			}
 		);
 	}
@@ -126,7 +127,8 @@ class Super_Light_Store_Hours_Settings {
 	 * Adds the settings page to the admin menu.
 	 */
 	public function slsh_add_settings_page() {
-		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_woocommerce', 'sl-store-hours', array( $this, 'slsh_render_plugin_settings_page' ) );
+		$capability = is_woocommerce_activated() ? 'manage_woocommerce' : 'manage_options';
+		add_options_page( 'Custom Store Hours', 'Store Hours', $capability, 'sl-store-hours', array( $this, 'slsh_render_plugin_settings_page' ) );
 	}
 
 	/**
