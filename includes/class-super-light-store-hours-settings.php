@@ -15,6 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class Super_Light_Store_Hours_Settings.
+ *
+ * Handles the configuration and settings for the Super Light Store Hours plugin.
+ */
 class Super_Light_Store_Hours_Settings {
 	/**
 	 * An array of allowed HTML elements and attributes.
@@ -60,16 +65,35 @@ class Super_Light_Store_Hours_Settings {
 		'code'     => array(),
 
 	);
+	/**
+	 * Default options for the plugin.
+	 *
+	 * @var array
+	 */
 	private $default_options = array(
 		'working_days'         => array( 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ),
 		'opening_closing_time' => '00-24',
 		'override_status'      => '0',
 	);
+	/**
+	 * Super_Light_Store_Hours_Settings constructor.
+	 *
+	 * Initializes the Super_Light_Store_Hours_Settings class by setting up various WordPress actions and filters.
+	 */
 	public function __construct() {
+		// Add settings page to admin menu.
 		add_action( 'admin_menu', array( $this, 'slsh_add_settings_page' ) );
+
+		// Register settings on admin initialization.
 		add_action( 'admin_init', array( $this, 'slsh_register_settings' ) );
+
+		// Register settings for REST API.
 		add_action( 'rest_api_init', array( $this, 'slsh_register_settings' ) );
+
+		// Initialize conditions on WordPress initialization.
 		add_action( 'init', array( $this, 'get_slsh_condition' ) );
+
+		// Register REST API route for fetching store state.
 		add_action(
 			'rest_api_init',
 			function () {
@@ -84,38 +108,50 @@ class Super_Light_Store_Hours_Settings {
 				);
 			}
 		);
+
+		// Add settings page link to plugin action links.
 		$dir = dirname( plugin_basename( __DIR__ ), 1 );
 		add_filter( 'plugin_action_links_' . $dir . '/super-light-store-hours.php', array( $this, 'add_settings_page_link' ) );
+
+		// Set capability for options page to manage WooCommerce capability.
 		add_filter(
 			'option_page_capability_sl-store-hours',
 			function( $capability ) {
 				return 'manage_woocommerce';
 			}
 		);
-
 	}
 
+	/**
+	 * Adds the settings page to the admin menu.
+	 */
 	public function slsh_add_settings_page() {
 		add_options_page( 'Custom Store Hours', 'Store Hours', 'manage_woocommerce', 'sl-store-hours', array( $this, 'slsh_render_plugin_settings_page' ) );
 	}
 
+	/**
+	 * Renders the plugin settings page.
+	 */
 	public function slsh_render_plugin_settings_page() {
 		?>
-			<div class="wrap">
-				<div class="main_content">
-					<h2><?php esc_html_e( 'Store Operating Hours', 'super-light-store-hours' ); ?></h2>
-					<form action="options.php" method="post">
+		<div class="wrap">
+			<div class="main_content">
+				<h2><?php esc_html_e( 'Store Operating Hours', 'super-light-store-hours' ); ?></h2>
+				<form action="options.php" method="post">
 					<?php
 					settings_fields( 'sl-store-hours' );
 					do_settings_sections( 'sl_store_hours' );
 					?>
-						<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
-					</form>
-				</div>
+					<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
+				</form>
 			</div>
-			<?php
+		</div>
+		<?php
 	}
 
+	/**
+	 * Registers plugin settings.
+	 */
 	public function slsh_register_settings() {
 		register_setting(
 			'sl-store-hours',
@@ -147,25 +183,34 @@ class Super_Light_Store_Hours_Settings {
 		);
 
 		if ( function_exists( 'add_settings_section' ) ) {
-
 			add_settings_section( 'schedule_settings', __( 'Schedule Settings', 'super-light-store-hours' ), array( $this, 'slsh_plugin_section_text' ), 'sl_store_hours' );
 
 			add_settings_field( 'slsh_plugin_setting_working_days', __( 'Working Days', 'super-light-store-hours' ), array( $this, 'slsh_plugin_setting_working_days' ), 'sl_store_hours', 'schedule_settings' );
 			add_settings_field( 'slsh_plugin_setting_opening_closing_time', __( 'Opening & Closing Time', 'super-light-store-hours' ), array( $this, 'slsh_plugin_setting_opening_closing_time' ), 'sl_store_hours', 'schedule_settings' );
 			add_settings_field( 'slsh_plugin_setting_override_status', __( 'Enable Store', 'super-light-store-hours' ), array( $this, 'slsh_plugin_setting_override_status' ), 'sl_store_hours', 'schedule_settings' );
-
 		}
 	}
 
+	/**
+	 * Validates plugin options.
+	 *
+	 * @param array $input The input options.
+	 *
+	 * @return array The validated options.
+	 */
 	public function slsh_plugin_options_validate( $input ) {
 		$current_options = get_option( 'slsh_plugin_options', $this->default_options );
+
 		// Add 0 as the override_status value if it's not currently set.
 		$input['override_status'] ??= '0';
+
 		if ( isset( $input['opening_closing_time'] ) ) {
 			$input['opening_closing_time'] = trim( preg_replace( '/\s+/', '', $input['opening_closing_time'] ) );
+
 			if ( preg_match( '/^(\d{2}(?=-\d{2}))-((?<=\d{2}-)\d{2})/i', $input['opening_closing_time'], $matches ) ) {
 				array_shift( $matches );
 				$prev_match = 0;
+
 				foreach ( $matches as $match ) {
 					/*
 					Make sure that
@@ -177,13 +222,16 @@ class Super_Light_Store_Hours_Settings {
 						add_settings_error( 'slsh_plugin_setting_opening_closing_time', 'slsh_plugin_options[opening_closing_time]', __( 'Error: The opening and closing time should not exceed 24 (hours).', 'super-light-store-hours' ) );
 						break;
 					}
+
 					if ( $prev_match > $match ) {
 						$input['opening_closing_time'] = $current_options['opening_closing_time'];
 						add_settings_error( 'slsh_plugin_setting_opening_closing_time', 'slsh_plugin_options[opening_closing_time]', __( 'Error: The opening time should be earlier than the closing time.', 'super-light-store-hours' ) );
 						break;
 					}
+
 					$prev_match = $match;
 				}
+
 				return $input;
 			} else {
 				add_settings_error( 'slsh_plugin_setting_opening_closing_time', 'slsh_plugin_options[opening_closing_time]', __( 'Error: Use the format HH - HH for the opening and closing time. For example, 08 - 18.', 'super-light-store-hours' ) );
@@ -192,17 +240,21 @@ class Super_Light_Store_Hours_Settings {
 		}
 
 		return $input;
-
 	}
 
+	/**
+	 * Renders the section text for plugin settings.
+	 */
 	public function slsh_plugin_section_text() {
 		esc_html_e( 'Here you can set all the options regarding when you want to accept orders.', 'super-light-store-hours' );
 	}
 
+	/**
+	 * Renders the working days setting.
+	 */
 	public function slsh_plugin_setting_working_days() {
 		$options           = get_option( 'slsh_plugin_options', $this->default_options );
-		$slsh_working_days = isset( $options['working_days'] )
-		? (array) $options['working_days'] : array();
+		$slsh_working_days = isset( $options['working_days'] ) ? (array) $options['working_days'] : array();
 		?>
 		<input type='checkbox' name='slsh_plugin_options[working_days][]' id='sunday' <?php checked( in_array( 'Sunday', $slsh_working_days, true ), 1 ); ?> value='Sunday'>
 		<label for='sunday'><?php esc_html_e( 'Sunday', 'super-light-store-hours' ); ?></label><br>
@@ -221,20 +273,30 @@ class Super_Light_Store_Hours_Settings {
 		<?php
 	}
 
+	/**
+	 * Display HTML input for setting opening and closing time.
+	 *
+	 * @return void
+	 */
 	public function slsh_plugin_setting_opening_closing_time() {
 		$options = get_option( 'slsh_plugin_options', $this->default_options );
 		?>
-		<input id='slsh_plugin_setting_opening_closing_time' name='slsh_plugin_options[opening_closing_time]' type='text' value='<?php echo esc_attr( $options['opening_closing_time'] ); ?>' />
-		<span class="block_description">
-			<?php
-			$operating_hrs_desc = __( 'Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.', 'super-light-store-hours' );
-			echo wp_kses( $operating_hrs_desc, $this->allowed_html );
-			?>
-			<!-- Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.</span> -->
-
+	<input id='slsh_plugin_setting_opening_closing_time' name='slsh_plugin_options[opening_closing_time]' type='text' value='<?php echo esc_attr( $options['opening_closing_time'] ); ?>' />
+	<span class="block_description">
+		<?php
+		// Description for operating hours format.
+		$operating_hrs_desc = __( 'Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.', 'super-light-store-hours' );
+		echo wp_kses( $operating_hrs_desc, $this->allowed_html );
+		?>
+		<!-- Use the format <strong>HH - HH</strong>, for example, <code>08 - 18</code>. Hours are only supported in the 24H format and minutes are not allowed. Spaces are optional.</span> -->
 		<?php
 	}
 
+	/**
+	 * Display HTML input for overriding store status.
+	 *
+	 * @return void
+	 */
 	public function slsh_plugin_setting_override_status() {
 		$options = get_option( 'slsh_plugin_options', $this->default_options );
 		// One of the values to compare.
@@ -245,19 +307,24 @@ class Super_Light_Store_Hours_Settings {
 		// Whether to echo or just return the string.
 		$display = true;
 		?>
-		<label class="switch">
-		<input type='checkbox' name='slsh_plugin_options[override_status]' id='override_status' <?php checked( $checked, $current, $display ); ?> value='1' >
-
-			<span class="slider round"></span>
-		</label>
-		<br><span class="block_description">
-			<?php
-			esc_html_e( 'This option overrides other scheduling options.', 'super-light-store-hours' );
-			?>
-		</span>
+	<label class="switch">
+	<input type='checkbox' name='slsh_plugin_options[override_status]' id='override_status' <?php checked( $checked, $current, $display ); ?> value='1' >
+		<span class="slider round"></span>
+	</label>
+	<br><span class="block_description">
+		<?php
+		// Description for override status.
+		esc_html_e( 'This option overrides other scheduling options.', 'super-light-store-hours' );
+		?>
+	</span>
 		<?php
 	}
 
+	/**
+	 * Get the store condition based on working days, current day, and time range.
+	 *
+	 * @return array Store condition status.
+	 */
 	public function get_slsh_condition() {
 		$slsh_options           = get_option( 'slsh_plugin_options', $this->default_options );
 		$slsh_options['status'] = null;
@@ -267,6 +334,7 @@ class Super_Light_Store_Hours_Settings {
 			$slsh_options['status'] = '1';
 			return $slsh_options;
 		}
+
 		$current_datetime_obj = current_datetime();
 		$day_of_week          = $current_datetime_obj->format( 'l' );
 
@@ -288,7 +356,7 @@ class Super_Light_Store_Hours_Settings {
 
 		if ( ! function_exists( __NAMESPACE__ . '\format_plain_hours' ) ) {
 			/**
-			 * Takes a plain number and returns a valid time string (e.g 14 => 14:00:00)
+			 * Takes a plain number and returns a valid time string (e.g 14 => 14:00:00).
 			 *
 			 * @param string $hours A plain 2 digit string.
 			 * @return string
@@ -312,10 +380,21 @@ class Super_Light_Store_Hours_Settings {
 		}
 	}
 
+	/**
+	 * Get the store settings by calling the condition function.
+	 *
+	 * @return array Store condition status.
+	 */
 	public function get_slsh_settings() {
 		return $this->get_slsh_condition();
 	}
 
+	/**
+	 * Add settings page link to the plugin action links.
+	 *
+	 * @param array $links Plugin action links.
+	 * @return array Updated plugin action links.
+	 */
 	public function add_settings_page_link( array $links ) {
 		$url           = get_admin_url() . 'options-general.php?page=sl-store-hours';
 		$settings_link = '<a href="' . $url . '">' . __( 'Settings', 'super-light-store-hours' ) . '</a>';
