@@ -341,7 +341,7 @@ class Super_Light_Store_Hours_Settings {
 		$day_of_week          = $current_datetime_obj->format( 'l' );
 
 		// Check if no working day has been added.
-		if ( is_null( $slsh_options['working_days'] ) ) {
+		if ( ! array_key_exists( 'working_days', $slsh_options ) ) {
 			$slsh_options['status'] = '0';
 			return $slsh_options;
 		}
