@@ -17,31 +17,31 @@ The Super Light Store Hours WordPress plugin is your comprehensive solution for 
 
 ## Features
 
-1. Flexible Configuration:
+1\. Flexible Configuration:
 
 - Set working days for your store to align with your business operation.
 - Specify opening and closing times in a 24-hour format.
 
-2. Override Store Status:
+2\. Override Store Status:
 
 - Enable or disable your store with a simple toggle.
 - Useful for special occasions, holidays, or unexpected closures.
 
-3. Seamless WooCommerce Integration:
+3\. Seamless WooCommerce Integration:
 
 - Dynamically adjusts capabilities based on WooCommerce activation
 - Intelligently manages "Add to Cart" buttons based on store operating hours.
 
-4. Informative Store Closure Notices:
+4\. Informative Store Closure Notices:
 
 - Displays a visually appealing store closure notice during closed hours.
 - Customized messages strategically placed to inform customers about the closure.
 
-5. Dynamic Language Localization:
+5\. Dynamic Language Localization:
 
 - Declares text domain and languages directory for multilingual support.
 
-6. Reusable Store Closure Message:
+6\. Reusable Store Closure Message:
 
 - Utilizes a reusable and easily modifiable store closure message.
 
@@ -53,16 +53,16 @@ The Super Light Store Hours WordPress plugin is your comprehensive solution for 
 
 - `GET /wp-json/slsh/v1/state`
 
-2. **Parameters:**
+2\. **Parameters:**
 
 - None
 
-3. **Response:**
+3\. **Response:**
 
 - JSON object containing store condition status.
 - Example:
 
-```
+``` json
 {
   "working_days": ["Monday", "Wednesday", "Friday"],
   "opening_closing_time": "09-18",
@@ -71,7 +71,7 @@ The Super Light Store Hours WordPress plugin is your comprehensive solution for 
 }
 ```
 
-4. **How to Use:**
+4\. **How to Use:**
 
 - Make a GET request to the endpoint to retrieve the store's current operating condition.
 - Use the provided information to dynamically adjust your application's behavior based on the store's status.
