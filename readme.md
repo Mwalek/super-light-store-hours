@@ -62,14 +62,14 @@ The Super Light Store Hours WordPress plugin is your comprehensive solution for 
 - JSON object containing store condition status.
 - Example:
 
-```json
-{
-  "working_days": ["Monday", "Wednesday", "Friday"],
-  "opening_closing_time": "09-18",
-  "override_status": "0",
-  "status": "1"
-}
-```
+<!-- end of the list -->
+
+    {
+      "working_days": ["Monday", "Wednesday", "Friday"],
+      "opening_closing_time": "09-18",
+      "override_status": "0",
+      "status": "1"
+    }
 
 4\. **How to Use:**
 
