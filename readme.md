@@ -3,7 +3,7 @@
 Contributors: mwalek  
 Tags: store, hours, closing, opening, schedule  
 Requires at least: 4.6  
-Tested up to: 6.3  
+Tested up to: 6.4  
 Stable tag: 0.0.1  
 Requires PHP: 5.3  
 License: GPL v3  
